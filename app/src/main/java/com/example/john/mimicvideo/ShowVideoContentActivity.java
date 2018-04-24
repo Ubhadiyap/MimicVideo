@@ -509,12 +509,12 @@ public class ShowVideoContentActivity extends BaseActivity {
             for(int i = 0; i < editVideoContent.likeList.size(); i++){
                 if(editVideoContent.likeList.get(i).user_id == user_id){
                     if(editVideoContent.likeList.get(i).is_click == 1){
-                        giveLikeImg.setBackgroundResource(R.drawable.smile_like_yellow);
+                        giveLikeImg.setImageResource(R.drawable.smile_like_yellow);
                     }else{
-                        giveLikeImg.setBackgroundResource(R.drawable.smile_like);
+                        giveLikeImg.setImageResource(R.drawable.smile_like);
                     }
                 }else{
-                    giveLikeImg.setBackgroundResource(R.drawable.smile_like);
+                    giveLikeImg.setImageResource(R.drawable.smile_like);
                 }
             }
         }
