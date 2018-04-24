@@ -233,7 +233,6 @@ public class TestVideoActivity extends BaseActivity implements OnTrimVideoListen
         handler=new Handler();
         soundPool = new SoundPool(100, 0,10);
         loadFFMpegBinary();
-        //executeHandleVideoCommand();
 
         setUpListeners();
         setUpMargins();
@@ -279,7 +278,6 @@ public class TestVideoActivity extends BaseActivity implements OnTrimVideoListen
                     muteVideoImg.setImageResource(R.drawable.speaker_close);
                     mute();
                 }
-                //executeHandleVideoCommand();
             }
         });
 
@@ -345,8 +343,7 @@ public class TestVideoActivity extends BaseActivity implements OnTrimVideoListen
         nextImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                executeMuteVideoCommand(Uri.parse("/storage/emulated/0/share_content.mp4"));
-                executeAddAudioToVideoCommand(Uri.parse("/storage/emulated/0/fuck_video.mp4"));
+                executeHandleVideoCommand();
             }
         });
 
@@ -868,7 +865,8 @@ public class TestVideoActivity extends BaseActivity implements OnTrimVideoListen
         );
         String filePrefix = "gg_video";
         String fileExtn = ".mp4";
-        String yourRealPath = "/storage/emulated/0/share_content.mp4";
+//        String yourRealPath = "/storage/emulated/0/share_content.mp4";
+        String yourRealPath = "/storage/emulated/0/Movies/fuck_video.mp4";
         File dest = new File(moviesDir, filePrefix + fileExtn);
         int fileNo = 0;
         while (dest.exists()) {
@@ -882,19 +880,32 @@ public class TestVideoActivity extends BaseActivity implements OnTrimVideoListen
                 break;
             }
             case 1:{
-                String[] complexCommand  = {"-i", yourRealPath, "-i", recordAudioList.get(0).path, "-filter_complex", "[1]adelay=1000|1000[aud];[0][aud]amix", "-c:v", "copy", videoContentPath};
+                //String[] complexCommand  = {"-i", yourRealPath, "-i", recordAudioList.get(0).path, "-filter_complex", "[1]adelay=1000|1000[aud];[0][aud]amix", "-c:v", "copy", videoContentPath};
+                //String[] complexCommand = {"-i", yourRealPath, "-i", recordAudioList.get(0).path, "-c:v", "copy", "-c:a", "aac", "-strict", "experimental", "-shortest", videoContentPath};
+//                String[] complexCommand = {"-i", yourRealPath, "-itsoffset", "00:00:10", recordAudioList.get(0).path, "-map", "0:0", "-map", "1:0", "-c:v",
+//                "copy", "-preset ultrafast", "-async", "1", videoContentPath};
+//                String[] complexCommand = {"-i", yourRealPath, "-i", recordAudioList.get(0).path, "-filter_complex", "aevalsrc=0:d=30[s1];\n" +
+//                        "[s1][1:a]concat=n=2:v=0:a=1[aout]", "-c:v", "copy", "-map", "0:v", "-map", "[aout]", videoContentPath};
+                String[] complexCommand = {"-i", yourRealPath, "-i", recordAudioList.get(0).path, "-filter_complex", "[1]adelay=1000|1000[s1];\n" +
+                        "[s1][1:a]concat=n=2:v=0:a=1[aout]", "-c:v", "copy", "-map", "0:v", "-map", "[aout]", videoContentPath};
                 execFFmpegBinary(complexCommand);
                 break;
             }
             case 2:{
+//                String[] complexCommand = {"-i", yourRealPath, "-i", recordAudioList.get(0).path, "-i", recordAudioList.get(1).path, "-filter_complex",
+//                        "[1]adelay=1000|1000[aud1];[2]adelay=2000|2000[aud2];[0][aud1][aud2]amix=3", "-c:v", "copy", videoContentPath};
                 String[] complexCommand = {"-i", yourRealPath, "-i", recordAudioList.get(0).path, "-i", recordAudioList.get(1).path, "-filter_complex",
-                        "[1]adelay=1000|1000[aud1];[2]adelay=2000|2000[aud2];[0][aud1][aud2]amix=3", "-c:v", "copy", videoContentPath};
+                        "[1]adelay=1000|1000[s1];[2]adelay=2000|2000[s2];\n" +
+                        "[s1][s2][1:a]concat=n=3:v=0:a=1[aout]", "-c:v", "copy", "-map", "0:v", "-map", "[aout]", videoContentPath};
                 execFFmpegBinary(complexCommand);
                 break;
             }
             case 3:{
+//                String[] complexCommand = {"-i", yourRealPath, "-i", recordAudioList.get(0).path, "-i", recordAudioList.get(1).path, "-i", recordAudioList.get(2).path, "-filter_complex",
+//                        "[1]adelay=1000|1000[aud1];[2]adelay=2000|2000[aud2];[3]adelay=5000|5000[aud3];[0][aud1][aud2][aud3]amix=4", "-c:v", "copy", videoContentPath};
                 String[] complexCommand = {"-i", yourRealPath, "-i", recordAudioList.get(0).path, "-i", recordAudioList.get(1).path, "-i", recordAudioList.get(2).path, "-filter_complex",
-                        "[1]adelay=1000|1000[aud1];[2]adelay=2000|2000[aud2];[3]adelay=5000|5000[aud3];[0][aud1][aud2][aud3]amix=4", "-c:v", "copy", videoContentPath};
+                        "[1]adelay=1000|1000[s1];[2]adelay=2000|2000[s2];[3]adelay=5000|5000[s3];\n" +
+                                "[s1][s2][s3][1:a]concat=n=4:v=0:a=1[aout]", "-c:v", "copy", "-map", "0:v", "-map", "[aout]", videoContentPath};
                 execFFmpegBinary(complexCommand);
                 break;
             }
@@ -926,7 +937,7 @@ public class TestVideoActivity extends BaseActivity implements OnTrimVideoListen
         }
         String filePath = dest.getAbsolutePath();
 
-        String[] complexCommand = {"-i", yourRealPath, "-an", filePath};
+        String[] complexCommand = {"-i", yourRealPath, "-codec", "copy", "-an", filePath};
 
         execFFmpegBinary(complexCommand);
     }
@@ -945,12 +956,49 @@ public class TestVideoActivity extends BaseActivity implements OnTrimVideoListen
             dest = new File(moviesDir, filePrefix + fileNo + fileExtn);
         }
         handleFileName = dest.getAbsolutePath();
-//        String[] complexCommand = {"-i", originalFileName, "-an", "-c", "copy", handleFileName};
-        //String[] complexCommand = {"-ss", "" + startMs / 1000, "-y", "-i", yourRealPath, "-t", "" + (endMs - startMs) / 1000,"-vcodec", "mpeg4", "-b:v", "2097152", "-b:a", "48000", "-ac", "2", "-ar", "22050", filePath};
-        String[] complexCommand  = {"-i", originalFileName, "-i", recordAudioList.get(0).path, "-filter_complex", "[1]adelay=1000|1000[aud];[0][aud]amix", "-c:v", "copy", handleFileName};
-//                execFFmpegBinary(complexCommand);
-//                break;
-        execMuteVideoFFmpegBinary(complexCommand);
+        //String[] complexCommand = {"-i", originalFileName, "-an", "-c", "copy", handleFileName};
+
+        if(isMute){
+            String[] complexCommand = {"-i", originalFileName, "-codec", "copy", "-an", handleFileName};
+            execMuteVideoFFmpegBinary(complexCommand);
+        }else{
+            switch(recordAudioList.size()){
+                case 0:{
+                    Toast.makeText(TestVideoActivity.this, "尚未錄製聲音", Toast.LENGTH_SHORT).show();
+                    break;
+                }
+                case 1:{
+                    //String[] complexCommand  = {"-i", yourRealPath, "-i", recordAudioList.get(0).path, "-filter_complex", "[1]adelay=1000|1000[aud];[0][aud]amix", "-c:v", "copy", videoContentPath};
+                    //String[] complexCommand = {"-i", yourRealPath, "-i", recordAudioList.get(0).path, "-c:v", "copy", "-c:a", "aac", "-strict", "experimental", "-shortest", videoContentPath};
+//                String[] complexCommand = {"-i", yourRealPath, "-itsoffset", "00:00:10", recordAudioList.get(0).path, "-map", "0:0", "-map", "1:0", "-c:v",
+//                "copy", "-preset ultrafast", "-async", "1", videoContentPath};
+//                String[] complexCommand = {"-i", yourRealPath, "-i", recordAudioList.get(0).path, "-filter_complex", "aevalsrc=0:d=30[s1];\n" +
+//                        "[s1][1:a]concat=n=2:v=0:a=1[aout]", "-c:v", "copy", "-map", "0:v", "-map", "[aout]", videoContentPath};
+                    String[] complexCommand = {"-i", handleFileName, "-i", recordAudioList.get(0).path, "-filter_complex", "[1]adelay=1000|1000[s1];\n" +
+                            "[s1][1:a]concat=n=2:v=0:a=1[aout]", "-c:v", "copy", "-map", "0:v", "-map", "[aout]", handleFileName};
+                    execFFmpegBinary(complexCommand);
+                    break;
+                }
+                case 2:{
+//                String[] complexCommand = {"-i", yourRealPath, "-i", recordAudioList.get(0).path, "-i", recordAudioList.get(1).path, "-filter_complex",
+//                        "[1]adelay=1000|1000[aud1];[2]adelay=2000|2000[aud2];[0][aud1][aud2]amix=3", "-c:v", "copy", videoContentPath};
+                    String[] complexCommand = {"-i", handleFileName, "-i", recordAudioList.get(0).path, "-i", recordAudioList.get(1).path, "-filter_complex",
+                            "[1]adelay=1000|1000[s1];[2]adelay=2000|2000[s2];\n" +
+                                    "[s1][s2][1:a]concat=n=3:v=0:a=1[aout]", "-c:v", "copy", "-map", "0:v", "-map", "[aout]", handleFileName};
+                    execFFmpegBinary(complexCommand);
+                    break;
+                }
+                case 3:{
+//                String[] complexCommand = {"-i", yourRealPath, "-i", recordAudioList.get(0).path, "-i", recordAudioList.get(1).path, "-i", recordAudioList.get(2).path, "-filter_complex",
+//                        "[1]adelay=1000|1000[aud1];[2]adelay=2000|2000[aud2];[3]adelay=5000|5000[aud3];[0][aud1][aud2][aud3]amix=4", "-c:v", "copy", videoContentPath};
+                    String[] complexCommand = {"-i", handleFileName, "-i", recordAudioList.get(0).path, "-i", recordAudioList.get(1).path, "-i", recordAudioList.get(2).path, "-filter_complex",
+                            "[1]adelay=1000|1000[s1];[2]adelay=2000|2000[s2];[3]adelay=5000|5000[s3];\n" +
+                                    "[s1][s2][s3][1:a]concat=n=4:v=0:a=1[aout]", "-c:v", "copy", "-map", "0:v", "-map", "[aout]", handleFileName};
+                    execFFmpegBinary(complexCommand);
+                    break;
+                }
+            }
+        }
     }
 
     private void execMuteVideoFFmpegBinary(final String[] command) {
@@ -965,9 +1013,42 @@ public class TestVideoActivity extends BaseActivity implements OnTrimVideoListen
                     @Override
                     public void onSuccess(String s) {
                         Log.d(TAG, "SUCCESS with output : " + s);
-//                        String[] complexCommand = {"-ss", "" + mStartPosition / 1000, "-y", "-i", handleFileName, "-t", "" + (mEndPosition - mStartPosition) / 1000,"-vcodec", "mpeg4", "-b:v", "2097152", "-b:a", "48000", "-ac", "2", "-ar", "22050", handleFileName};
-//                        String[] complexCommand  = {"-i", handleFileName, "-i", recordAudioList.get(0).path, "-filter_complex", "[1]adelay=1000|1000[aud];[0][aud]amix", "-c:v", "copy", handleFileName};
-//                        execCutVideoFFmpegBinary(complexCommand);
+                        switch(recordAudioList.size()){
+                            case 0:{
+                                Toast.makeText(TestVideoActivity.this, "尚未錄製聲音", Toast.LENGTH_SHORT).show();
+                                break;
+                            }
+                            case 1:{
+                                //String[] complexCommand  = {"-i", yourRealPath, "-i", recordAudioList.get(0).path, "-filter_complex", "[1]adelay=1000|1000[aud];[0][aud]amix", "-c:v", "copy", videoContentPath};
+                                //String[] complexCommand = {"-i", yourRealPath, "-i", recordAudioList.get(0).path, "-c:v", "copy", "-c:a", "aac", "-strict", "experimental", "-shortest", videoContentPath};
+//                String[] complexCommand = {"-i", yourRealPath, "-itsoffset", "00:00:10", recordAudioList.get(0).path, "-map", "0:0", "-map", "1:0", "-c:v",
+//                "copy", "-preset ultrafast", "-async", "1", videoContentPath};
+//                String[] complexCommand = {"-i", yourRealPath, "-i", recordAudioList.get(0).path, "-filter_complex", "aevalsrc=0:d=30[s1];\n" +
+//                        "[s1][1:a]concat=n=2:v=0:a=1[aout]", "-c:v", "copy", "-map", "0:v", "-map", "[aout]", videoContentPath};
+                                String[] complexCommand = {"-i", handleFileName, "-i", recordAudioList.get(0).path, "-filter_complex", "[1]adelay=1000|1000[s1];\n" +
+                                        "[s1][1:a]concat=n=2:v=0:a=1[aout]", "-c:v", "copy", "-map", "0:v", "-map", "[aout]", handleFileName};
+                                execFFmpegBinary(complexCommand);
+                                break;
+                            }
+                            case 2:{
+//                String[] complexCommand = {"-i", yourRealPath, "-i", recordAudioList.get(0).path, "-i", recordAudioList.get(1).path, "-filter_complex",
+//                        "[1]adelay=1000|1000[aud1];[2]adelay=2000|2000[aud2];[0][aud1][aud2]amix=3", "-c:v", "copy", videoContentPath};
+                                String[] complexCommand = {"-i", handleFileName, "-i", recordAudioList.get(0).path, "-i", recordAudioList.get(1).path, "-filter_complex",
+                                        "[1]adelay=1000|1000[s1];[2]adelay=2000|2000[s2];\n" +
+                                                "[s1][s2][1:a]concat=n=3:v=0:a=1[aout]", "-c:v", "copy", "-map", "0:v", "-map", "[aout]", handleFileName};
+                                execFFmpegBinary(complexCommand);
+                                break;
+                            }
+                            case 3:{
+//                String[] complexCommand = {"-i", yourRealPath, "-i", recordAudioList.get(0).path, "-i", recordAudioList.get(1).path, "-i", recordAudioList.get(2).path, "-filter_complex",
+//                        "[1]adelay=1000|1000[aud1];[2]adelay=2000|2000[aud2];[3]adelay=5000|5000[aud3];[0][aud1][aud2][aud3]amix=4", "-c:v", "copy", videoContentPath};
+                                String[] complexCommand = {"-i", handleFileName, "-i", recordAudioList.get(0).path, "-i", recordAudioList.get(1).path, "-i", recordAudioList.get(2).path, "-filter_complex",
+                                        "[1]adelay=1000|1000[s1];[2]adelay=2000|2000[s2];[3]adelay=5000|5000[s3];\n" +
+                                                "[s1][s2][s3][1:a]concat=n=4:v=0:a=1[aout]", "-c:v", "copy", "-map", "0:v", "-map", "[aout]", handleFileName};
+                                execFFmpegBinary(complexCommand);
+                                break;
+                            }
+                        }
                     }
 
                     @Override
