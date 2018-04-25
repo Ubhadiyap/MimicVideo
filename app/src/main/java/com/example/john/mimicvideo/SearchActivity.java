@@ -38,6 +38,7 @@ import java.util.List;
 public class SearchActivity extends BaseActivity {
     TextView backTxt;
     EditText keyWordEdit;
+    private TextView clearTxt;
     JSONParser jsonParser = new JSONParser();
     List<VideoContent>searchVideoContentList = new ArrayList<>();
     private int LOAD_TESTING_VIDEO = 3;
@@ -57,6 +58,10 @@ public class SearchActivity extends BaseActivity {
 
         keyWordEdit = findViewById(R.id.keyWordEdit);
         searchVideoContentRV = findViewById(R.id.searchVideoContentRV);
+        clearTxt = findViewById(R.id.clearTxt);
+        clearTxt.setTypeface(ApplicationService.getFont());
+        clearTxt.setText(R.string.fa_times);
+
         layoutManager = new GridLayoutManagerWithSmoothScroller(this, 2);
         layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
@@ -79,6 +84,13 @@ public class SearchActivity extends BaseActivity {
             }
         });
 
+        clearTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                keyWordEdit.setText("");
+            }
+        });
+
         keyWordEdit.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -87,8 +99,15 @@ public class SearchActivity extends BaseActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                video_content_amount = 20;
-                new SearchVideoContent(keyWordEdit.getText().toString(), video_content_amount).execute();
+                if(charSequence.length() == 0){
+                    clearTxt.setVisibility(View.INVISIBLE);
+                    searchVideoContentList = new ArrayList<>();
+                    searchVideoContentAdapter.resetSearch(searchVideoContentList);
+                }else{
+                    clearTxt.setVisibility(View.VISIBLE);
+                    video_content_amount = 20;
+                    new SearchVideoContent(keyWordEdit.getText().toString(), video_content_amount).execute();
+                }
             }
 
             @Override
