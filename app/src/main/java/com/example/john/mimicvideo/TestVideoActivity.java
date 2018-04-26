@@ -30,6 +30,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.DownloadListener;
+import com.androidnetworking.interfaces.DownloadProgressListener;
 import com.example.john.mimicvideo.model.RecordAudio;
 import com.example.john.mimicvideo.view.VideoTrimmer.interfaces.OnK4LVideoListener;
 import com.example.john.mimicvideo.view.VideoTrimmer.interfaces.OnProgressVideoListener;
@@ -44,6 +49,7 @@ import com.github.hiteshsondhi88.libffmpeg.FFmpeg;
 import com.github.hiteshsondhi88.libffmpeg.LoadBinaryResponseHandler;
 import com.github.hiteshsondhi88.libffmpeg.exceptions.FFmpegCommandAlreadyRunningException;
 import com.github.hiteshsondhi88.libffmpeg.exceptions.FFmpegNotSupportedException;
+import com.jacksonandroidnetworking.JacksonParserFactory;
 
 import junit.framework.Test;
 
@@ -59,7 +65,6 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.john.mimicvideo.utils.MyProgressDialog.show;
 import static com.example.john.mimicvideo.view.VideoTrimmer.utils.TrimVideoUtils.stringForTime;
 
 public class TestVideoActivity extends BaseActivity implements OnTrimVideoListener, OnK4LVideoListener{
@@ -139,24 +144,34 @@ public class TestVideoActivity extends BaseActivity implements OnTrimVideoListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_video);
-        mProgressDialog = new ProgressDialog(this);
-        mProgressDialog.setCancelable(false);
-        mProgressDialog.setMessage("合成中");
+//        mProgressDialog = new ProgressDialog(this);
+//        mProgressDialog.setCancelable(false);
+//        mProgressDialog.setMessage("合成中");
+        AndroidNetworking.initialize(getApplicationContext());
+        AndroidNetworking.setParserFactory(new JacksonParserFactory());
 
-        if(getIntent().getIntExtra("video_sample_id", 0) != 0){
-            videoSampleId = getIntent().getIntExtra("video_sample_id", 0);
-            String videoSampleUrl = getIntent().getStringExtra("video_sample_url");
-            //new DownloadFileFromURL(videoSampleUrl);
-        }else{
-            String videoContentUrl = getIntent().getStringExtra("videoContentUrl");
-            //new DownloadFileFromURL(videoContentUrl).execute();
-        }
+//        if(getIntent().getIntExtra("video_sample_id", 0) != 0){
+//            videoSampleId = getIntent().getIntExtra("video_sample_id", 0);
+//            String videoSampleUrl = getIntent().getStringExtra("video_sample_url");
+//            downLoadFileFromUrl(videoSampleUrl, "/storage/emulated/0/", "share_content.mp4");
+//        }else if(getIntent().getStringExtra("videoContentUrl") != null){
+//            String videoContentUrl = getIntent().getStringExtra("videoContentUrl");
+//            new DownloadFileFromURL(videoContentUrl).execute();
+//        }else if(getIntent().getStringExtra("cameraVideoUrl") != null){
+//            String cameraVideoUrl = getIntent().getStringExtra("cameraVideoUrl");
+////            setVideoURI(Uri.parse( "/storage/emulated/0/share_content.mp4"));
+//            init();
+//            setVideoURI(Uri.parse(cameraVideoUrl));
+//            setMaxDuration(40);
+//            setOnTrimVideoListener(this);
+//            setOnK4LVideoListener(this);
+//        }
 
         init();
-        setVideoURI(Uri.parse( "/storage/emulated/0/share_content.mp4"));
+        setVideoURI(Uri.parse("/storage/emulated/0/share_content.mp4"));
         setMaxDuration(40);
-        setOnTrimVideoListener(this);
-        setOnK4LVideoListener(this);
+        setOnTrimVideoListener(TestVideoActivity.this);
+        setOnK4LVideoListener(TestVideoActivity.this);
     }
 
     @Override
@@ -1243,6 +1258,30 @@ public class TestVideoActivity extends BaseActivity implements OnTrimVideoListen
         mTimeLineView.setVideo(mSrc);
     }
 
+    public void downLoadFileFromUrl(String url, String dirPath, String fileName){
+        AndroidNetworking.download(url,dirPath,fileName)
+                .setTag("downloadTest")
+                .setPriority(Priority.MEDIUM)
+                .build()
+                .setDownloadProgressListener(new DownloadProgressListener() {
+                    @Override
+                    public void onProgress(long bytesDownloaded, long totalBytes) {
+                        // do anything with progress
+                    }
+                })
+                .startDownload(new DownloadListener() {
+                    @Override
+                    public void onDownloadComplete() {
+                        // do anything after completion
+                        Toast.makeText(TestVideoActivity.this, "download successfully", Toast.LENGTH_SHORT).show();
+                    }
+                    @Override
+                    public void onError(ANError error) {
+                        // handle error
+                    }
+                });
+    }
+
 
     private class MessageHandler extends Handler {
 
@@ -1264,7 +1303,7 @@ public class TestVideoActivity extends BaseActivity implements OnTrimVideoListen
         }
     }
 
-    public static class DownloadFileFromURL extends AsyncTask<String, String, String> {
+    public class DownloadFileFromURL extends AsyncTask<String, String, String> {
         String imageURL;
 
         public DownloadFileFromURL(String imageURL){
@@ -1338,6 +1377,7 @@ public class TestVideoActivity extends BaseActivity implements OnTrimVideoListen
         protected void onProgressUpdate(String... progress) {
             // setting progress percentage
 //            pDialog.setProgress(Integer.parseInt(progress[0]));
+
         }
 
         /**
@@ -1347,7 +1387,7 @@ public class TestVideoActivity extends BaseActivity implements OnTrimVideoListen
         protected void onPostExecute(String file_url) {
             // dismiss the dialog after the file was downloaded
 //            dismissDialog(progress_bar_type);
-
+            setVideoURI(Uri.parse("/storage/emulated/0/share_content.mp4"));
         }
 
     }
