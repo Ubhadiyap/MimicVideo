@@ -63,6 +63,7 @@
             android:layout_alignParentRight="true"
             android:layout_marginBottom="20dp"
             android:layout_marginRight="20dp"
+            android:visibility="gone"
             app:srcCompat="@drawable/com_facebook_close" />
 
         <LinearLayout
@@ -145,7 +146,7 @@
             android:id="@+id/reportTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/openSameVideoContentImg"
+            android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:layout_marginBottom="20dp"
             android:layout_marginRight="20dp"
@@ -159,7 +160,7 @@
         android:id="@+id/videoContentTitleTxt"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="7"
+        android:layout_weight="10"
         android:gravity="center_horizontal"
         android:text="TextView" />
 </LinearLayout>
