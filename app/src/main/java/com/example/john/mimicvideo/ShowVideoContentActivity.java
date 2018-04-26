@@ -21,8 +21,6 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.bumptech.glide.Glide;
-import com.example.john.mimicvideo.adapter.MainVideoContentPagerAdapter;
-import com.example.john.mimicvideo.adapter.SameVideoContentPagerAdapter;
 import com.example.john.mimicvideo.api.Api;
 import com.example.john.mimicvideo.model.Like;
 import com.example.john.mimicvideo.model.User;
@@ -79,6 +77,7 @@ public class ShowVideoContentActivity extends BaseActivity {
     private int user_id;
     private VideoContent editVideoContent;
     private int editVideoContentId;
+    private ArrayList<String>clickFavoriteIdArrayList =  new ArrayList<>();
 
 
     @Override
@@ -131,6 +130,8 @@ public class ShowVideoContentActivity extends BaseActivity {
 
         sharePreferenceDB = new SharePreferenceDB(this);
         user_id = sharePreferenceDB.getInt("id");
+        clickFavoriteIdArrayList = sharePreferenceDB.getListString("clickFavoriteIdArrayList");
+
 
         editVideoContentId = getIntent().getIntExtra("videoContentId",0);
 
@@ -176,16 +177,20 @@ public class ShowVideoContentActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 if(user_id != 0){
-                    if(view.getBackground() == getResources().getDrawable(R.drawable.smile_like_yellow)){
+                    if(getDrawableId(giveLikeImg) == R.drawable.smile_like_yellow){
                         view.setBackgroundResource(R.drawable.smile_like);
+                        view.setTag(R.drawable.smile_like);
                         new UpdateLikeAmount(user_id, editVideoContent.id, 0).execute();
                         editVideoContent.likeAmount = editVideoContent.likeAmount - 1;
                         likeAmountTxt.setText(String.valueOf(editVideoContent.likeAmount));
+                        clickFavoriteIdArrayList.remove(String.valueOf(editVideoContent.id));
                     }else{
                         view.setBackgroundResource(R.drawable.smile_like_yellow);
+                        view.setTag(R.drawable.smile_like_yellow);
                         new UpdateLikeAmount(user_id, editVideoContent.id, 1).execute();
                         editVideoContent.likeAmount = editVideoContent.likeAmount + 1;
                         likeAmountTxt.setText(String.valueOf(editVideoContent.likeAmount));
+                        clickFavoriteIdArrayList.add(String.valueOf(editVideoContent.id));
                     }
                 }else{
                     Intent intent = new Intent();
@@ -267,6 +272,21 @@ public class ShowVideoContentActivity extends BaseActivity {
         new GetVideoContent(editVideoContentId).execute();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        clickFavoriteIdArrayList = sharePreferenceDB.getListString("clickFavoriteIdArrayList");
+        if(clickFavoriteIdArrayList.contains(String.valueOf(editVideoContent.id))){
+            for(int j=0; j < editVideoContent.likeList.size(); j++){
+                if(sharePreferenceDB.getInt("id") ==  editVideoContent.likeList.get(j).user_id){
+                    editVideoContent.likeList.get(j).is_click = 1;
+                    break;
+                }
+            }
+        }
+    }
+
+
     public void showVideo(){
         SimpleExoPlayer player ;
         // 1.創建一个默認TrackSelector
@@ -303,6 +323,10 @@ public class ShowVideoContentActivity extends BaseActivity {
         player.prepare(videoSource);
         player.setPlayWhenReady(true);
         player.setRepeatMode(1);
+    }
+
+    private int getDrawableId(ImageView iv) {
+        return (int) iv.getTag();
     }
 
     class UpdateLikeAmount extends AsyncTask<String, String, String> {
@@ -510,11 +534,14 @@ public class ShowVideoContentActivity extends BaseActivity {
                 if(editVideoContent.likeList.get(i).user_id == user_id){
                     if(editVideoContent.likeList.get(i).is_click == 1){
                         giveLikeImg.setImageResource(R.drawable.smile_like_yellow);
+                        giveLikeImg.setTag(R.drawable.smile_like_yellow);
                     }else{
                         giveLikeImg.setImageResource(R.drawable.smile_like);
+                        giveLikeImg.setTag(R.drawable.smile_like);
                     }
                 }else{
                     giveLikeImg.setImageResource(R.drawable.smile_like);
+                    giveLikeImg.setTag(R.drawable.smile_like);
                 }
             }
         }
