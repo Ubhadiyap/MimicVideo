@@ -23,6 +23,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.john.mimicvideo.CameraActivity;
 import com.example.john.mimicvideo.CommentActivity;
+import com.example.john.mimicvideo.LoadingActivity;
 import com.example.john.mimicvideo.LoginActivity;
 import com.example.john.mimicvideo.OtherProfileActivity;
 import com.example.john.mimicvideo.R;
@@ -58,12 +59,14 @@ public class MainVideoContentAutoPlayAdapter extends AAH_VideosAdapter {
     private JSONParser jsonParser = new JSONParser();
     private SharePreferenceDB sharePreferenceDB;
     private int user_id;
+    private ArrayList<String>clickFavoriteIdArrayList = new ArrayList<>();
 
     public MainVideoContentAutoPlayAdapter(Context context, List<VideoContent>mainVideoContentList) {
         this.context = context;
         this.mainVideoContentList = mainVideoContentList;
         sharePreferenceDB = new SharePreferenceDB(context);
         user_id = sharePreferenceDB.getInt("id");
+        this.clickFavoriteIdArrayList = sharePreferenceDB.getListString("clickFavoriteIdArrayList");
     }
 
     @Override
@@ -110,7 +113,7 @@ public class MainVideoContentAutoPlayAdapter extends AAH_VideosAdapter {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent();
-                intent.setClass(context, TestVideoActivity.class);
+                intent.setClass(context, LoadingActivity.class);
                 intent.putExtra("videoContentUrl", videoContent.url);
                 context.startActivity(intent);
             }
