@@ -17,7 +17,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.john.mimicvideo.adapter.SameVideoContentPagerAdapter;
 import com.example.john.mimicvideo.adapter.SearchVideoContentAdapter;
 import com.example.john.mimicvideo.api.Api;
 import com.example.john.mimicvideo.model.User;
