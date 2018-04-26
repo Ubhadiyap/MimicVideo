@@ -1,5 +1,6 @@
 package com.example.john.mimicvideo;
 
+import android.content.Intent;
 import android.media.MediaMetadataRetriever;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,6 +41,8 @@ public class VideoSampleActivity extends BaseActivity {
     VideoSampleAdapter videoSampleAdapter;
     List<VideoSample> videoSampleList = new ArrayList<>();
     private RecyclerView videoSampleRV;
+    private ImageView toCameraImg;
+
     private int current_size = 100;
     private boolean is_loading = false;
     private int video_sample_amount = 100;
@@ -53,6 +57,8 @@ public class VideoSampleActivity extends BaseActivity {
         videoSampleRV = findViewById(R.id.videoSampleRV);
         backTxt = findViewById(R.id.backTxt);
         searchVideoContentEdit = findViewById(R.id.searchVideoSampleEdit);
+        toCameraImg = findViewById(R.id.toCameraImg);
+
         backTxt.setTypeface(ApplicationService.getFont());
         backTxt.setText(getString(R.string.fa_caret_left));
 
@@ -91,6 +97,15 @@ public class VideoSampleActivity extends BaseActivity {
             public void onClick(View view) {
                 video_sample_amount = 0;
                 new SearchVideoSample(searchVideoContentEdit.getText().toString(), video_sample_amount).execute();
+            }
+        });
+
+        toCameraImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent();
+                intent.setClass(VideoSampleActivity.this, CameraElementActivity.class);
+                startActivity(intent);
             }
         });
     }
