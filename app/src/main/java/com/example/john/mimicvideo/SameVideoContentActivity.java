@@ -13,9 +13,7 @@ import android.widget.AbsListView;
 import android.widget.TextView;
 
 import com.example.john.mimicvideo.adapter.MainVideoContentAutoPlayAdapter;
-import com.example.john.mimicvideo.adapter.SameVideoContentAdapter;
 import com.example.john.mimicvideo.adapter.SameVideoContentAutoPlayAdapter;
-import com.example.john.mimicvideo.adapter.SameVideoContentPagerAdapter;
 import com.example.john.mimicvideo.api.Api;
 import com.example.john.mimicvideo.fragment.MainFragment;
 import com.example.john.mimicvideo.model.Like;
@@ -23,6 +21,7 @@ import com.example.john.mimicvideo.model.User;
 import com.example.john.mimicvideo.model.VideoContent;
 import com.example.john.mimicvideo.utils.ApplicationService;
 import com.example.john.mimicvideo.utils.JSONParser;
+import com.example.john.mimicvideo.utils.SharePreferenceDB;
 import com.example.john.mimicvideo.view.AutoPlayVideo.AAH_CustomRecyclerView;
 
 import org.apache.http.NameValuePair;
@@ -36,8 +35,6 @@ import java.util.List;
 public class SameVideoContentActivity extends BaseActivity {
     JSONParser jsonParser = new JSONParser();
     List<VideoContent>sameVideoContentList = new ArrayList<>();
-    SameVideoContentPagerAdapter sameVideoContentPagerAdapter ;
-    SameVideoContentAdapter sameVideoContentAdapter;
     SameVideoContentAutoPlayAdapter sameVideoContentAutoPlayAdapter;
     ViewPager sameVideoContentVP;
     RecyclerView sameVideoContentRV;
@@ -47,6 +44,7 @@ public class SameVideoContentActivity extends BaseActivity {
     private int current_size = 100;
     private TextView backTxt;
     private boolean is_loading = false;
+    private int user_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +54,7 @@ public class SameVideoContentActivity extends BaseActivity {
         backTxt = findViewById(R.id.backTxt);
         sameVideoContentRV = findViewById(R.id.sameVideoContentRV);
         sameVideoContentAutoPlayRV = findViewById(R.id.sameVideoContentAutoPlayRV);
+
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(SameVideoContentActivity.this, LinearLayoutManager.VERTICAL, false);
         sameVideoContentAutoPlayRV.setLayoutManager(layoutManager);
@@ -89,6 +88,24 @@ public class SameVideoContentActivity extends BaseActivity {
         });
 
         new GetSameVideoContent(video_content_amount, video_sample_id).execute();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        SharePreferenceDB sharePreferenceDB = new SharePreferenceDB(this);
+        ArrayList<Integer>clickFavoriteIdArrayList = sharePreferenceDB.getListInt("clickFavoriteIdArrayList");
+        for(int i=0; i < sameVideoContentList.size(); i++){
+           if(clickFavoriteIdArrayList.contains(sameVideoContentList.get(i).id)){
+               for(int j=0; j < sameVideoContentList.get(i).likeList.size(); j++){
+                   if(sharePreferenceDB.getInt("id") ==  sameVideoContentList.get(i).likeList.get(j).user_id){
+                       sameVideoContentList.get(i).likeList.get(j).is_click = 1;
+                       break;
+                   }
+               }
+           }
+        }
+
     }
 
 
