@@ -17,8 +17,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.john.mimicvideo.adapter.MainVideoContentPagerAdapter;
-import com.example.john.mimicvideo.adapter.SameVideoContentPagerAdapter;
 import com.example.john.mimicvideo.api.Api;
 import com.example.john.mimicvideo.model.Like;
 import com.example.john.mimicvideo.model.User;
