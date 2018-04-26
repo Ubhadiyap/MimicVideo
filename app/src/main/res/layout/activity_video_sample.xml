@@ -32,12 +32,12 @@
             android:inputType="textPersonName"
             android:textCursorDrawable="@drawable/color_cursor" />
 
-        <TextView
-            android:id="@+id/textView2"
+        <ImageView
+            android:id="@+id/toCameraImg"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/icon_img_size"
             android:layout_weight="2"
-            android:text="TextView" />
+            android:src="@drawable/add_black_circular_button" />
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
