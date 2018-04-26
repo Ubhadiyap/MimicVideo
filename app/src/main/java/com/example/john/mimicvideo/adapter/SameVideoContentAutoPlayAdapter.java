@@ -157,12 +157,12 @@ public class SameVideoContentAutoPlayAdapter extends AAH_VideosAdapter {
             for(int i = 0; i < videoContent.likeList.size(); i++){
                 if(videoContent.likeList.get(i).user_id == user_id){
                     if(videoContent.likeList.get(i).is_click == 1){
-                        videoContentViewHolder.giveLikeImg.setBackgroundResource(R.drawable.smile_like_yellow);
+                        videoContentViewHolder.giveLikeImg.setImageResource(R.drawable.smile_like_yellow);
                     }else{
-                        videoContentViewHolder.giveLikeImg.setBackgroundResource(R.drawable.smile_like);
+                        videoContentViewHolder.giveLikeImg.setImageResource(R.drawable.smile_like);
                     }
                 }else{
-                    videoContentViewHolder.giveLikeImg.setBackgroundResource(R.drawable.smile_like);
+                    videoContentViewHolder.giveLikeImg.setImageResource(R.drawable.smile_like);
                 }
             }
             videoContentViewHolder.giveLikeImg.setOnClickListener(new View.OnClickListener() {
@@ -178,6 +178,9 @@ public class SameVideoContentAutoPlayAdapter extends AAH_VideosAdapter {
                             like.user_id = sharePreferenceDB.getInt("id");
                             like.video_content_id = sameVideoContentList.get(position).id;
                             sameVideoContentList.get(position).likeList.remove(like);
+                            ArrayList<String>clickFavoriteIdArrayList = sharePreferenceDB.getListString("clickFavoriteIdArrayList");
+                            clickFavoriteIdArrayList.remove(String.valueOf(sameVideoContentList.get(position).id));
+                            sharePreferenceDB.putListString("clickFavoriteIdArrayList", clickFavoriteIdArrayList);
                         }else{
                             view.setBackgroundResource(R.drawable.smile_like_yellow);
                             new UpdateLikeAmount(user_id, videoContent.id, 1).execute();
@@ -187,6 +190,9 @@ public class SameVideoContentAutoPlayAdapter extends AAH_VideosAdapter {
                             like.user_id = sharePreferenceDB.getInt("id");
                             like.video_content_id = sameVideoContentList.get(position).id;
                             sameVideoContentList.get(position).likeList.add(like);
+                            ArrayList<String>clickFavoriteIdArrayList = sharePreferenceDB.getListString("clickFavoriteIdArrayList");
+                            clickFavoriteIdArrayList.add(String.valueOf(sameVideoContentList.get(position).id));
+                            sharePreferenceDB.putListString("clickFavoriteIdArrayList", clickFavoriteIdArrayList);
                         }
                     }else{
                         Intent intent = new Intent();
@@ -320,7 +326,7 @@ public class SameVideoContentAutoPlayAdapter extends AAH_VideosAdapter {
             ownerLayout = itemView.findViewById(R.id.ownerLayout);
             shareTxt = itemView.findViewById(R.id.shareTxt);
             shareTxt.setTypeface(ApplicationService.getFont());
-            shareTxt.setText(R.string.fa_share_square_o);
+            shareTxt.setText(R.string.fa_smile_o);
             commentAmountTxt = itemView.findViewById(R.id.commentAmountTxt);
             likeAmountTxt = itemView.findViewById(R.id.likeAmountTxt);
             reportTxt = itemView.findViewById(R.id.reportTxt);
