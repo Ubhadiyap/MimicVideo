@@ -36,8 +36,6 @@ dependencies {
 
     compile 'com.writingminds:FFmpegAndroid:0.3.2' // for video edit
 
-    compile 'com.squareup.okhttp3:okhttp:3.3.1'
-
     compile 'com.android.support:multidex:1.0.1'
 
     implementation 'com.google.android.exoplayer:exoplayer-core:2.6.0'
@@ -47,5 +45,10 @@ dependencies {
     compile 'com.writingminds:FFmpegAndroid:0.3.2'
 
     compile 'com.googlecode.mp4parser:isoparser:1.1.20'
+
+    //below for fast networking job
+    compile 'com.amitshekhar.android:android-networking:1.0.1'
+    compile 'com.amitshekhar.android:jackson-android-networking:1.0.1'
+    compile 'com.squareup.okhttp3:okhttp:3.10.0'
 
 }
