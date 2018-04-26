@@ -28,9 +28,7 @@ import com.example.john.mimicvideo.SearchActivity;
 import com.example.john.mimicvideo.ShowVideoContentActivity;
 import com.example.john.mimicvideo.TestVideoActivity;
 import com.example.john.mimicvideo.VideoSampleActivity;
-import com.example.john.mimicvideo.adapter.MainVideoContentAdapter;
 import com.example.john.mimicvideo.adapter.MainVideoContentAutoPlayAdapter;
-import com.example.john.mimicvideo.adapter.MainVideoContentPagerAdapter;
 import com.example.john.mimicvideo.api.Api;
 import com.example.john.mimicvideo.model.Comment;
 import com.example.john.mimicvideo.model.Like;
@@ -65,12 +63,10 @@ public class MainFragment extends Fragment {
     RecyclerView mainVideoContentRV;
     AAH_CustomRecyclerView mainVideoContentAutoPlayRV;
     List<VideoContent>videoContentList = new ArrayList<>();
-    MainVideoContentPagerAdapter mainVideoContentPagerAdapter;
     SharePreferenceDB sharePreferenceDB;
     private int video_content_amount = 20;
     private int current_size = 100;
     private boolean is_loading = false;
-    private MainVideoContentAdapter mainVideoContentAdapter;
     public MainVideoContentAutoPlayAdapter mainVideoContentAutoPlayAdapter;
 
     @Override
@@ -137,25 +133,6 @@ public class MainFragment extends Fragment {
         searchIconTxt.setTypeface(ApplicationService.getFont());
         searchIconTxt.setText(getString(R.string.fa_search));
 
-//        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-//        mainVideoContentRV.setLayoutManager(layoutManager);
-//        mainVideoContentAdapter = new MainVideoContentAdapter(getActivity(), videoContentList);
-//        mainVideoContentRV.setAdapter(mainVideoContentAdapter);
-//
-//        mainVideoContentRV.setOnScrollListener(new RecyclerView.OnScrollListener() {
-//            @Override
-//            public void onScrollStateChanged(RecyclerView recyclerView, int scrollState) {
-//                super.onScrollStateChanged(recyclerView, scrollState);
-//
-//                if(((LinearLayoutManager)recyclerView.getLayoutManager()).findLastCompletelyVisibleItemPosition() > (current_size - 50) && !is_loading){
-//
-//                    is_loading = true;
-//                    video_content_amount = video_content_amount + 100;
-//                    new GetAllVideoContent(video_content_amount).execute();
-//                }
-//            }
-//        });
-
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         mainVideoContentAutoPlayRV.setLayoutManager(layoutManager);
         mainVideoContentAutoPlayAdapter = new MainVideoContentAutoPlayAdapter(getActivity(), videoContentList);
@@ -180,19 +157,6 @@ public class MainFragment extends Fragment {
         goProfilePageTxt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-//                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//                fragmentTransaction.replace(R.id.allContainer, ProfileFragment.newInstance());
-//                fragmentTransaction.commit();
-//                Intent intent = new Intent();
-//                intent.setClass(getActivity(), CameraActivity.class);
-//                startActivity(intent);
-//                Intent intent = new Intent(Intent.ACTION_SEND);
-//                intent.setType("image/*");
-//                        intent.putExtra(Intent.EXTRA_SUBJECT,"share");
-//                intent.putExtra(Intent.EXTRA_TEXT,"successfully");
-//                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                startActivity(Intent.createChooser(intent, ""));
                 if(sharePreferenceDB.getInt("id") != 0 ){
                     Intent intent = new Intent();
                     intent.setClass(getActivity(), ProfileActivity.class);
@@ -325,8 +289,6 @@ public class MainFragment extends Fragment {
 
 
         protected void onPostExecute(String file_url) {
-//            mainVideoContentPagerAdapter = new MainVideoContentPagerAdapter(getActivity(), videoContentList);
-//            mainVideoContentVP.setAdapter(mainVideoContentPagerAdapter);
             is_loading = false;
             mainVideoContentAutoPlayAdapter.setMainVideoContentList(videoContentList);
         }
@@ -411,8 +373,6 @@ public class MainFragment extends Fragment {
 
 
         protected void onPostExecute(String file_url) {
-//            mainVideoContentPagerAdapter = new MainVideoContentPagerAdapter(getActivity(), videoContentList);
-//            mainVideoContentVP.setAdapter(mainVideoContentPagerAdapter);
             current_size = videoContentList.size();
             is_loading = false;
             mainVideoContentAutoPlayAdapter.setMainVideoContentList(videoContentList);
