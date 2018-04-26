@@ -111,15 +111,16 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="7">
+        android:layout_weight="3">
 
         <EditText
             android:id="@+id/editTitleEdit"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="false"
             android:layout_centerHorizontal="true"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            android:maxLength="20" />
 
         <Button
             android:id="@+id/saveBtn"
