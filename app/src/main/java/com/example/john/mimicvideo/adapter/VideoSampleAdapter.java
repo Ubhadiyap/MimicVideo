@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.john.mimicvideo.CameraActivity;
+import com.example.john.mimicvideo.LoadingActivity;
 import com.example.john.mimicvideo.R;
 import com.example.john.mimicvideo.ShowVideoContentActivity;
 import com.example.john.mimicvideo.TestVideoActivity;
@@ -74,7 +75,7 @@ public class VideoSampleAdapter extends RecyclerView.Adapter<VideoSampleAdapter.
                 Intent intent = new Intent();
                 intent.putExtra("video_sample_id", videoSampleList.get(position).id);
                 intent.putExtra("video_sample_url", videoSampleList.get(position).url);
-                intent.setClass(context, TestVideoActivity.class);
+                intent.setClass(context, LoadingActivity.class);
                 context.startActivity(intent);
             }
         });
