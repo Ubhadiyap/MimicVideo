@@ -81,7 +81,10 @@
         <activity android:name=".VideoContentTitleActivity" />
         <activity android:name=".EditVideoContentActivity" />
         <activity android:name=".OtherProfileActivity" />
-        <activity android:name=".TestVideoActivity"></activity>
+        <activity android:name=".TestVideoActivity" />
+        <activity android:name=".CameraElementActivity" />
+        <activity android:name=".LoadingActivity" />
+        <activity android:name=".FantasticCameraActivity"></activity>
     </application>
 
 </manifest>

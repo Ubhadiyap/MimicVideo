@@ -67,11 +67,11 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
 
 
     public static final int BUTTON_STATE_ONLY_CAPTURE = 0x101;      //只能拍照
-    public static final int BUTTON_STATE_ONLY_RECORDER = 0x102;     //只能录像
-    public static final int BUTTON_STATE_BOTH = 0x103;              //两者都可以
+    public static final int BUTTON_STATE_ONLY_RECORDER = 0x102;     //只能錄像
+    public static final int BUTTON_STATE_BOTH = 0x103;              //兩者都可以
 
 
-    //回调监听
+    //回調監聽
     private JCameraListener jCameraLisenter;
     private ClickListener leftClickListener;
     private ClickListener rightClickListener;
@@ -189,7 +189,7 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
 
             @Override
             public void recordShort(final long time) {
-                mCaptureLayout.setTextWithAnimation("录制时间过短");
+                mCaptureLayout.setTextWithAnimation("錄製時間過短");
                 mSwitchCamera.setVisibility(VISIBLE);
                 mFlashLamp.setVisibility(VISIBLE);
                 postDelayed(new Runnable() {
