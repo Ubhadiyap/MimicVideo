@@ -109,6 +109,7 @@ public class ShowVideoContentActivity extends BaseActivity {
         }
     }
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -184,12 +185,14 @@ public class ShowVideoContentActivity extends BaseActivity {
                         editVideoContent.likeAmount = editVideoContent.likeAmount - 1;
                         likeAmountTxt.setText(String.valueOf(editVideoContent.likeAmount));
                         clickFavoriteIdArrayList.remove(String.valueOf(editVideoContent.id));
+                        sharePreferenceDB.putListString("clickFavoriteIdArrayList", clickFavoriteIdArrayList);
                     }else{
                         ((ImageView)view).setImageResource(R.drawable.smile_like_yellow);
                         new UpdateLikeAmount(user_id, editVideoContent.id, 1).execute();
                         editVideoContent.likeAmount = editVideoContent.likeAmount + 1;
                         likeAmountTxt.setText(String.valueOf(editVideoContent.likeAmount));
                         clickFavoriteIdArrayList.add(String.valueOf(editVideoContent.id));
+                        sharePreferenceDB.putListString("clickFavoriteIdArrayList", clickFavoriteIdArrayList);
                     }
                 }else{
                     Intent intent = new Intent();
@@ -229,7 +232,7 @@ public class ShowVideoContentActivity extends BaseActivity {
                 intent.putExtra("id", editVideoContent.owner.id);
                 intent.putExtra("name", editVideoContent.owner.name);
                 intent.putExtra("profile", editVideoContent.owner.profile);
-                startActivity(intent);
+                startActivityForResult(intent, 0);
             }
         });
 
@@ -276,13 +279,14 @@ public class ShowVideoContentActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         clickFavoriteIdArrayList = sharePreferenceDB.getListString("clickFavoriteIdArrayList");
         if(clickFavoriteIdArrayList.contains(String.valueOf(editVideoContent.id))){
-            for(int j=0; j < editVideoContent.likeList.size(); j++){
-                if(sharePreferenceDB.getInt("id") ==  editVideoContent.likeList.get(j).user_id){
-                    editVideoContent.likeList.get(j).is_click = 1;
-                    break;
-                }
-            }
+            giveLikeImg.setImageResource(R.drawable.smile_like_yellow);
+            editVideoContent.likeAmount = editVideoContent.likeAmount + 1;
+        }else{
+            giveLikeImg.setImageResource(R.drawable.smile_like);
+            editVideoContent.likeAmount = editVideoContent.likeAmount - 1;
         }
+        likeAmountTxt.setText(String.valueOf(editVideoContent.likeAmount));
+
     }
 
 
