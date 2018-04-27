@@ -9,6 +9,8 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.AbsListView;
@@ -43,7 +45,6 @@ public class VideoSampleActivity extends BaseActivity {
     private RecyclerView videoSampleRV;
     private ImageView toCameraImg;
 
-    private int current_size = 100;
     private boolean is_loading = false;
     private int video_sample_amount = 100;
     private TextView backTxt;
@@ -92,11 +93,33 @@ public class VideoSampleActivity extends BaseActivity {
 //            }
 //        });
 
+        searchVideoContentEdit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(charSequence.length() == 0){
+                    video_sample_amount = 100;
+                    new GetVideoSample(video_sample_amount).execute();
+                }else{
+                    video_sample_amount = 100;
+                    new SearchVideoSample(searchVideoContentEdit.getText().toString(), video_sample_amount).execute();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
         backTxt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                video_sample_amount = 0;
-                new SearchVideoSample(searchVideoContentEdit.getText().toString(), video_sample_amount).execute();
+                finish();
             }
         });
 
@@ -158,7 +181,6 @@ public class VideoSampleActivity extends BaseActivity {
         protected void onPostExecute(String file_url) {
 
             videoSampleAdapter.setVideoSampleList(videoSampleList);
-            current_size = videoSampleList.size();
             is_loading = false;
         }
 
@@ -216,7 +238,6 @@ public class VideoSampleActivity extends BaseActivity {
         protected void onPostExecute(String file_url) {
             // updating UI from Background Thread
             videoSampleAdapter.setVideoSampleList(videoSampleList);
-            current_size = videoSampleList.size();
             is_loading = false;
         }
 
