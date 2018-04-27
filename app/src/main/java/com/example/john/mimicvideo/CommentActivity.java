@@ -71,6 +71,8 @@ public class CommentActivity extends BaseActivity {
             public void onClick(View view) {
                 if(user_id != 0){
                     new CreateComment(user_id, video_content_id, createCommentEdit.getText().toString()).execute();
+                    createCommentEdit.setText("");
+                    hideSoftKeyboard(CommentActivity.this, createCommentEdit);
                 }else{
                     Intent intent = new Intent();
                     intent.setClass(CommentActivity.this, LoginActivity.class);
@@ -218,6 +220,7 @@ public class CommentActivity extends BaseActivity {
                     commentAdapter.addNewComment(comment);
 
                     commentAdapter.notifyDataSetChanged();
+                    commentRV.smoothScrollToPosition(commentAdapter.getItemCount());
                 }else{
                     Toast.makeText(CommentActivity.this, "留言失敗，請重新留言", Toast.LENGTH_SHORT).show();
                 }
