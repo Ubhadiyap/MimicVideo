@@ -1,5 +1,6 @@
 package com.example.john.mimicvideo;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -7,16 +8,21 @@ import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.john.mimicvideo.adapter.MainVideoContentAutoPlayAdapter;
+import com.example.john.mimicvideo.adapter.ReportDescriptionAdapter;
 import com.example.john.mimicvideo.api.Api;
 import com.example.john.mimicvideo.model.Like;
 import com.example.john.mimicvideo.model.User;
@@ -135,12 +141,36 @@ public class EditVideoContentActivity extends BaseActivity {
         deleteTxt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(editVideoContent != null){
-                    new DeleteVideoContent(editVideoContent.id).execute();
-                    finish();
-                }else{
-                    Toast.makeText(EditVideoContentActivity.this, "發生錯誤", Toast.LENGTH_SHORT).show();
-                }
+                final Dialog dialog = new Dialog(EditVideoContentActivity.this, R.style.selectorDialog);
+                dialog.setContentView(R.layout.dialog_delete_video);
+
+                TextView yesBtn = dialog.findViewById(R.id.yesBtn);
+                yesBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if(editVideoContent != null){
+                            new DeleteVideoContent(editVideoContent.id).execute();
+                            finish();
+                        }else{
+                            Toast.makeText(EditVideoContentActivity.this, "發生錯誤", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+                TextView noBtn = dialog.findViewById(R.id.noBtn);
+                noBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.dismiss();
+                    }
+                });
+
+
+                // 由程式設定 Dialog 視窗外的明暗程度, 亮度從 0f 到 1f
+                WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
+                lp.dimAmount = 0.5f;
+                dialog.getWindow().setAttributes(lp);
+                dialog.show();
             }
         });
 
