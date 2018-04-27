@@ -1,5 +1,6 @@
 package com.example.john.mimicvideo;
 
+import android.content.Intent;
 import android.media.MediaMetadataRetriever;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +20,7 @@ import com.example.john.mimicvideo.api.Api;
 import com.example.john.mimicvideo.model.Like;
 import com.example.john.mimicvideo.model.User;
 import com.example.john.mimicvideo.model.VideoContent;
+import com.example.john.mimicvideo.utils.ApplicationParameter;
 import com.example.john.mimicvideo.utils.ApplicationService;
 import com.example.john.mimicvideo.utils.GridLayoutManagerWithSmoothScroller;
 import com.example.john.mimicvideo.utils.JSONParser;
@@ -49,6 +51,13 @@ public class OtherProfileActivity extends BaseActivity {
     int id;
     String name;
     String profile;
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent();
+        setResult(ApplicationParameter.BACK_SHOW_VIDEO_CONTENT, intent);
+        finish();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +110,8 @@ public class OtherProfileActivity extends BaseActivity {
         backTxt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intent = new Intent();
+                setResult(ApplicationParameter.BACK_SHOW_VIDEO_CONTENT, intent);
                 finish();
             }
         });
