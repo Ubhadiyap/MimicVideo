@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -177,16 +178,14 @@ public class ShowVideoContentActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 if(user_id != 0){
-                    if(getDrawableId(giveLikeImg) == R.drawable.smile_like_yellow){
-                        view.setBackgroundResource(R.drawable.smile_like);
-                        view.setTag(R.drawable.smile_like);
+                    if(((ImageView)view).getDrawable().getCurrent().getConstantState()== getResources().getDrawable(R.drawable.smile_like_yellow).getConstantState()){
+                        ((ImageView)view).setImageResource(R.drawable.smile_like);
                         new UpdateLikeAmount(user_id, editVideoContent.id, 0).execute();
                         editVideoContent.likeAmount = editVideoContent.likeAmount - 1;
                         likeAmountTxt.setText(String.valueOf(editVideoContent.likeAmount));
                         clickFavoriteIdArrayList.remove(String.valueOf(editVideoContent.id));
                     }else{
-                        view.setBackgroundResource(R.drawable.smile_like_yellow);
-                        view.setTag(R.drawable.smile_like_yellow);
+                        ((ImageView)view).setImageResource(R.drawable.smile_like_yellow);
                         new UpdateLikeAmount(user_id, editVideoContent.id, 1).execute();
                         editVideoContent.likeAmount = editVideoContent.likeAmount + 1;
                         likeAmountTxt.setText(String.valueOf(editVideoContent.likeAmount));
@@ -534,14 +533,11 @@ public class ShowVideoContentActivity extends BaseActivity {
                 if(editVideoContent.likeList.get(i).user_id == user_id){
                     if(editVideoContent.likeList.get(i).is_click == 1){
                         giveLikeImg.setImageResource(R.drawable.smile_like_yellow);
-                        giveLikeImg.setTag(R.drawable.smile_like_yellow);
                     }else{
                         giveLikeImg.setImageResource(R.drawable.smile_like);
-                        giveLikeImg.setTag(R.drawable.smile_like);
                     }
                 }else{
                     giveLikeImg.setImageResource(R.drawable.smile_like);
-                    giveLikeImg.setTag(R.drawable.smile_like);
                 }
             }
         }

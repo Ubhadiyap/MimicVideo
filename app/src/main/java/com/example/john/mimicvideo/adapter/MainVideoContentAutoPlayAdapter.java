@@ -144,8 +144,8 @@ public class MainVideoContentAutoPlayAdapter extends AAH_VideosAdapter {
             @Override
             public void onClick(View view) {
                 if(sharePreferenceDB.getInt("id") != 0){
-                    if(view.getBackground() == context.getResources().getDrawable(R.drawable.smile_like_yellow)){
-                        view.setBackgroundResource(R.drawable.smile_like);
+                    if(((ImageView)view).getDrawable().getCurrent().getConstantState()== context.getResources().getDrawable(R.drawable.smile_like_yellow).getConstantState()){
+                        ((ImageView)view).setImageResource(R.drawable.smile_like);
                         new UpdateLikeAmount(user_id, videoContent.id, 0).execute();
                         mainVideoContentList.get(position).likeAmount =  mainVideoContentList.get(position).likeAmount - 1;
                         holder.likeAmountTxt.setText(String.valueOf(videoContent.likeAmount));
@@ -155,7 +155,7 @@ public class MainVideoContentAutoPlayAdapter extends AAH_VideosAdapter {
                         mainVideoContentList.get(position).likeList.remove(like);
 
                     }else{
-                        view.setBackgroundResource(R.drawable.smile_like_yellow);
+                        ((ImageView)view).setImageResource(R.drawable.smile_like_yellow);
                         new UpdateLikeAmount(user_id, videoContent.id, 1).execute();
                         mainVideoContentList.get(position).likeAmount = mainVideoContentList.get(position).likeAmount + 1;
                         holder.likeAmountTxt.setText(String.valueOf(videoContent.likeAmount));

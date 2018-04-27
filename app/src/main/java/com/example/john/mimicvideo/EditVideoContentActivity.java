@@ -178,14 +178,14 @@ public class EditVideoContentActivity extends BaseActivity {
             public void onClick(View view) {
                 if(editVideoContent != null){
                     if(sharePreferenceDB.getInt("id") != 0){
-                        if(view.getBackground() == getResources().getDrawable(R.drawable.smile_like_yellow)){
-                            view.setBackgroundResource(R.drawable.smile_like);
+                        if(((ImageView)view).getDrawable().getCurrent().getConstantState()== getResources().getDrawable(R.drawable.smile_like_yellow).getConstantState()){
+                            ((ImageView)view).setImageResource(R.drawable.smile_like);
                             new UpdateLikeAmount(user_id, editVideoContent.id, 0).execute();
                             editVideoContent.likeAmount = editVideoContent.likeAmount - 1;
                             likeAmountTxt.setText(String.valueOf(editVideoContent.likeAmount));
 
                         }else{
-                            view.setBackgroundResource(R.drawable.smile_like_yellow);
+                            ((ImageView)view).setImageResource(R.drawable.smile_like_yellow);
                             new UpdateLikeAmount(user_id, editVideoContent.id, 1).execute();
                             editVideoContent.likeAmount = editVideoContent.likeAmount + 1;
                             likeAmountTxt.setText(String.valueOf(editVideoContent.likeAmount));
