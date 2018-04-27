@@ -81,7 +81,7 @@
                 android:layout_above="@+id/likeAmountTxt"
                 android:layout_alignParentRight="false"
                 android:layout_marginBottom="20dp"
-                app:srcCompat="@drawable/smile_like" />
+                android:src="@drawable/smile_like" />
 
             <TextView
                 android:id="@+id/likeAmountTxt"
