@@ -19,6 +19,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.example.john.mimicvideo.CameraActivity;
 import com.example.john.mimicvideo.CommentActivity;
 import com.example.john.mimicvideo.LoginActivity;
@@ -55,6 +59,7 @@ import java.util.List;
  */
 
 public class MainFragment extends Fragment {
+    private String TAG = MainFragment.class.getSimpleName();
     TextView goProfilePageTxt;
     TextView goVideoSamplePageTxt;
     TextView searchIconTxt, searchNameTxt;
@@ -123,6 +128,8 @@ public class MainFragment extends Fragment {
 
         sharePreferenceDB = new SharePreferenceDB(getActivity());
 
+        getUserLike(sharePreferenceDB.getInt("id"));
+
 
         goProfilePageTxt.setTypeface(ApplicationService.getFont());
         goProfilePageTxt.setText(getText(R.string.fa_user_o));
@@ -135,7 +142,7 @@ public class MainFragment extends Fragment {
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         mainVideoContentAutoPlayRV.setLayoutManager(layoutManager);
-        mainVideoContentAutoPlayAdapter = new MainVideoContentAutoPlayAdapter(getActivity(), videoContentList);
+        mainVideoContentAutoPlayAdapter = new MainVideoContentAutoPlayAdapter(getActivity(), this, videoContentList);
         mainVideoContentAutoPlayRV.setAdapter(mainVideoContentAutoPlayAdapter);
         prepareAutoPlayRV();
 
@@ -160,11 +167,11 @@ public class MainFragment extends Fragment {
                 if(sharePreferenceDB.getInt("id") != 0 ){
                     Intent intent = new Intent();
                     intent.setClass(getActivity(), ProfileActivity.class);
-                    startActivity(intent);
+                    startActivityForResult(intent, 1);
                 }else{
                     Intent intent = new Intent();
                     intent.setClass(getActivity(), LoginActivity.class);
-                    startActivity(intent);
+                    startActivityForResult(intent, 1);
                 }
             }
         });
@@ -174,7 +181,7 @@ public class MainFragment extends Fragment {
             public void onClick(View view) {
                Intent intent = new Intent();
                intent.setClass(getActivity(), VideoSampleActivity.class);
-               startActivity(intent);
+               startActivityForResult(intent, 1);
             }
         });
 
@@ -183,12 +190,38 @@ public class MainFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent();
                 intent.setClass(getActivity(), SearchActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, 1);
             }
         });
 
         new GetAllVideoContent(video_content_amount).execute();
         return contentView;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        SharePreferenceDB sharePreferenceDB = new SharePreferenceDB(getActivity());
+        ArrayList<String>clickFavoriteIdArrayList = sharePreferenceDB.getListString("clickFavoriteIdArrayList");
+        for(int i=0; i < videoContentList.size(); i++){
+            if(clickFavoriteIdArrayList.contains(String.valueOf(videoContentList.get(i).id))){
+                Like like = new Like();
+                like.user_id = sharePreferenceDB.getInt("id");
+                like.is_click = 1;
+
+                if(!videoContentList.get(i).likeList.contains(like)){
+                    videoContentList.get(i).likeList.add(like);
+                }
+            }else{
+                Like like = new Like();
+                like.user_id = sharePreferenceDB.getInt("id");
+                like.is_click = 1;
+                videoContentList.get(i).likeList.remove(like);
+            }
+        }
+        mainVideoContentAutoPlayAdapter.setMainVideoContentList(videoContentList);
+
+
     }
 
     public void prepareAutoPlayRV(){
@@ -211,6 +244,35 @@ public class MainFragment extends Fragment {
         //call this functions when u want to start autoplay on loading async lists (eg firebase)
         mainVideoContentAutoPlayRV.smoothScrollBy(0,1);
         mainVideoContentAutoPlayRV.smoothScrollBy(0,-1);
+    }
+
+    public void getUserLike(int user_id){
+        AndroidNetworking.post(Api.baseUrl + "get_user_like.php")
+                .addBodyParameter("user_id", String.valueOf(user_id))
+                .setTag("test")
+                .setPriority(Priority.MEDIUM)
+                .build()
+                .getAsJSONArray(new JSONArrayRequestListener() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        Log.d(TAG, "get all my like successfully");
+                        try{
+                            ArrayList<String> clickFavoriteIdArrayList = new ArrayList<>();
+                            for(int i = 0; i < response.length(); ++i){
+                                clickFavoriteIdArrayList.add(response.getString(i));
+                            }
+                            sharePreferenceDB.putListString("clickFavoriteIdArrayList", clickFavoriteIdArrayList);
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+
+                    }
+                });
     }
 
     class GetAllVideoContent extends AsyncTask<String, String, String> {
