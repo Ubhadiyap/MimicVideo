@@ -26,6 +26,7 @@ import com.example.john.mimicvideo.api.Api;
 import com.example.john.mimicvideo.model.Like;
 import com.example.john.mimicvideo.model.User;
 import com.example.john.mimicvideo.model.VideoContent;
+import com.example.john.mimicvideo.utils.ApplicationParameter;
 import com.example.john.mimicvideo.utils.ApplicationService;
 import com.example.john.mimicvideo.utils.JSONParser;
 import com.example.john.mimicvideo.utils.SharePreferenceDB;
@@ -209,7 +210,8 @@ public class ShowVideoContentActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent();
-                intent.setClass(ShowVideoContentActivity.this, ShareActivity.class);
+                intent.setClass(ShowVideoContentActivity.this, LoadingActivity.class);
+                intent.putExtra("to", ApplicationParameter.TO_SHARE);
                 intent.putExtra("videoContentUrl", editVideoContent.url);
                 startActivity(intent);
             }
