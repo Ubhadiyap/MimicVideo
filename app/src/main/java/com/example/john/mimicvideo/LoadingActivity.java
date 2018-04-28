@@ -12,14 +12,17 @@ import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.DownloadListener;
 import com.androidnetworking.interfaces.DownloadProgressListener;
 import com.daimajia.numberprogressbar.NumberProgressBar;
+import com.example.john.mimicvideo.utils.ApplicationParameter;
 
 public class LoadingActivity extends BaseActivity {
     NumberProgressBar numberProgressBar;
+    private int to;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading);
+        to = getIntent().getIntExtra("to", 0);
         numberProgressBar = findViewById(R.id.number_progress_bar);
         if(getIntent().getIntExtra("video_sample_id", 0) != 0){
             int videoSampleId = getIntent().getIntExtra("video_sample_id", 0);
@@ -57,7 +60,11 @@ public class LoadingActivity extends BaseActivity {
                     public void onDownloadComplete() {
                         // do anything after completion
                         Intent intent = new Intent();
-                        intent.setClass(LoadingActivity.this, TestVideoActivity.class);
+                        if(to == ApplicationParameter.TO_RECORD){
+                            intent.setClass(LoadingActivity.this, TestVideoActivity.class);
+                        }else{
+                            intent.setClass(LoadingActivity.this, ShareActivity.class);
+                        }
                         startActivity(intent);
                         finish();
                     }
