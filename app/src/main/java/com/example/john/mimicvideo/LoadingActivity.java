@@ -11,13 +11,16 @@ import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.DownloadListener;
 import com.androidnetworking.interfaces.DownloadProgressListener;
+import com.daimajia.numberprogressbar.NumberProgressBar;
 
 public class LoadingActivity extends BaseActivity {
+    NumberProgressBar numberProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading);
+        numberProgressBar = findViewById(R.id.number_progress_bar);
         if(getIntent().getIntExtra("video_sample_id", 0) != 0){
             int videoSampleId = getIntent().getIntExtra("video_sample_id", 0);
             String videoSampleUrl = getIntent().getStringExtra("video_sample_url");
@@ -46,6 +49,7 @@ public class LoadingActivity extends BaseActivity {
                     @Override
                     public void onProgress(long bytesDownloaded, long totalBytes) {
                         // do anything with progress
+                        numberProgressBar.setProgress((int)((bytesDownloaded * 100) / totalBytes));
                     }
                 })
                 .startDownload(new DownloadListener() {
