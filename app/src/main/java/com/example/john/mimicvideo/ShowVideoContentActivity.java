@@ -279,11 +279,15 @@ public class ShowVideoContentActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         clickFavoriteIdArrayList = sharePreferenceDB.getListString("clickFavoriteIdArrayList");
         if(clickFavoriteIdArrayList.contains(String.valueOf(editVideoContent.id))){
-            giveLikeImg.setImageResource(R.drawable.smile_like_yellow);
-            editVideoContent.likeAmount = editVideoContent.likeAmount + 1;
+            if(giveLikeImg.getDrawable().getCurrent().getConstantState() != getResources().getDrawable(R.drawable.smile_like_yellow).getConstantState()){
+                giveLikeImg.setImageResource(R.drawable.smile_like_yellow);
+                editVideoContent.likeAmount = editVideoContent.likeAmount + 1;
+            }
         }else{
-            giveLikeImg.setImageResource(R.drawable.smile_like);
-            editVideoContent.likeAmount = editVideoContent.likeAmount - 1;
+            if(giveLikeImg.getDrawable().getCurrent().getConstantState() != getResources().getDrawable(R.drawable.smile_like).getConstantState()){
+                giveLikeImg.setImageResource(R.drawable.smile_like);
+                editVideoContent.likeAmount = editVideoContent.likeAmount - 1;
+            }
         }
         likeAmountTxt.setText(String.valueOf(editVideoContent.likeAmount));
 
