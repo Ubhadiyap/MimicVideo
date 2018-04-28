@@ -76,6 +76,7 @@ public class EditVideoContentActivity extends BaseActivity {
     private int videoContentId;
 
     private SharePreferenceDB sharePreferenceDB;
+    private ArrayList<String>clickFavoriteIdArrayList = new ArrayList<>();
     @Override
     public void onPause() {
         super.onPause();  // Always call the superclass method first
@@ -122,6 +123,7 @@ public class EditVideoContentActivity extends BaseActivity {
 
         sharePreferenceDB = new SharePreferenceDB(this);
         user_id = sharePreferenceDB.getInt("id");
+        clickFavoriteIdArrayList = sharePreferenceDB.getListString("clickFavoriteIdArrayList");
 
         videoContentId = getIntent().getIntExtra("videoContentId", 0);
 
@@ -213,12 +215,15 @@ public class EditVideoContentActivity extends BaseActivity {
                             new UpdateLikeAmount(user_id, editVideoContent.id, 0).execute();
                             editVideoContent.likeAmount = editVideoContent.likeAmount - 1;
                             likeAmountTxt.setText(String.valueOf(editVideoContent.likeAmount));
-
+                            clickFavoriteIdArrayList.remove(String.valueOf(editVideoContent.id));
+                            sharePreferenceDB.putListString("clickFavoriteIdArrayList", clickFavoriteIdArrayList);
                         }else{
                             ((ImageView)view).setImageResource(R.drawable.smile_like_yellow);
                             new UpdateLikeAmount(user_id, editVideoContent.id, 1).execute();
                             editVideoContent.likeAmount = editVideoContent.likeAmount + 1;
                             likeAmountTxt.setText(String.valueOf(editVideoContent.likeAmount));
+                            clickFavoriteIdArrayList.add(String.valueOf(editVideoContent.id));
+                            sharePreferenceDB.putListString("clickFavoriteIdArrayList", clickFavoriteIdArrayList);
                         }
                     }else{
                         Intent intent = new Intent();
@@ -547,7 +552,7 @@ public class EditVideoContentActivity extends BaseActivity {
             showVideo();
 
             commentAmountTxt.setText(String.valueOf(editVideoContent.commentAmount));
-            likeAmountTxt.setText(String.valueOf(editVideoContent.likeAmount));
+            likeAmountTxt.setText(String.valueOf(editVideoContent.likeList.size()));
 
 
             for(int i = 0; i < editVideoContent.likeList.size(); i++){
