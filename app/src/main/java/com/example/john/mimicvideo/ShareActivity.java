@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -22,12 +23,21 @@ import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.androidnetworking.interfaces.StringRequestListener;
+import com.androidnetworking.interfaces.UploadProgressListener;
 import com.example.john.mimicvideo.adapter.CommentAdapter;
 import com.example.john.mimicvideo.api.Api;
 import com.example.john.mimicvideo.model.Comment;
 import com.example.john.mimicvideo.model.User;
+import com.example.john.mimicvideo.utils.ApplicationParameter;
 import com.example.john.mimicvideo.utils.ApplicationService;
 import com.example.john.mimicvideo.utils.JSONParser;
 import com.example.john.mimicvideo.utils.MediaUtil;
@@ -58,6 +68,7 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -69,6 +80,7 @@ import java.net.URLConnection;
 import java.nio.file.WatchEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -86,10 +98,10 @@ import static com.example.john.mimicvideo.utils.FilePath.isMediaDocument;
 public class ShareActivity extends BaseActivity {
     private String TAG = ShareActivity.class.getSimpleName();
     TextView backTxt;
-    ImageView postVideoContentImg;
+    TextView postVideoContentTxt;
     private JSONParser jsonParser = new JSONParser();
     private SharePreferenceDB sharePreferenceDB;
-    private ImageView FBBtn, messageBtn, IGBtn, lineBtn, weiboBtn, wechatBtn, otherBtn;
+    private ImageView FBBtn, messageBtn, IGBtn, lineBtn, weiboBtn, wechatBtn, youTubeBtn, otherBtn;
     private int user_id;
 
     private CallbackManager callbackManager;
@@ -104,14 +116,13 @@ public class ShareActivity extends BaseActivity {
     private int LINE_SHARE = 4;
     private int WEIBO_SHARE = 5;
     private int WECHAT_SHARE = 6;
-    private int OTHER_SHARE = 7;
-    private int POST = 8;
+    private int YOUTUBE = 7;
+    private int OTHER_SHARE = 8;
+    private int POST = 9;
 
-    private int videoSampleId = 1;
-    private String videoContentTitle = "uj";
-    private String videoContentUrl;
+    private String videoContentTitle = "";
 
-    private FFmpeg ffmpeg;
+    ProgressDialog progressDialog;
 
 
 
@@ -120,17 +131,15 @@ public class ShareActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_share);
         backTxt = findViewById(R.id.backTxt);
-        postVideoContentImg = findViewById(R.id.postVideoContentImg);
+        postVideoContentTxt = findViewById(R.id.postVideoContentTxt);
         FBBtn = findViewById(R.id.FBBtn);
         messageBtn = findViewById(R.id.messageBtn);
         IGBtn = findViewById(R.id.IGBtn);
         lineBtn = findViewById(R.id.lineBtn);
         weiboBtn = findViewById(R.id.weiboBtn);
         wechatBtn = findViewById(R.id.wechatBtn);
+        youTubeBtn = findViewById(R.id.youtubeBtn);
         otherBtn = findViewById(R.id.otherBtn);
-
-        videoContentUrl = getIntent().getStringExtra("videoContentUrl");
-        new DownloadFileFromURL(videoContentUrl).execute();
 
         backTxt.setTypeface(ApplicationService.getFont());
         backTxt.setText(R.string.fa_caret_left);
@@ -154,44 +163,36 @@ public class ShareActivity extends BaseActivity {
         sharePreferenceDB = new SharePreferenceDB(this);
         user_id = sharePreferenceDB.getInt("id");
 
-        postVideoContentImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                    uploadVideoContentFile();
-                ApplicationService.verifyStoragePermissions(ShareActivity.this);
-                Intent intent = new Intent();
-                intent.setType("video/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent, "Complete action using"), POST);
-            }
-        });
-
-
-
         if(getIntent().getStringExtra("videoContentTitle") != null){
-            postVideoContentImg.setEnabled(true);
+            postVideoContentTxt.setEnabled(true);
             final String videoContentTitle = getIntent().getStringExtra("videoContentTitle");
-            final String video_sample_id = getIntent().getStringExtra("video_sample_id");
-            final String videoContentPath = getIntent().getStringExtra("videoContentPath");
-            postVideoContentImg.setOnClickListener(new View.OnClickListener() {
+            final int videoSampleId = getIntent().getIntExtra("videoSampleId", 0);
+            postVideoContentTxt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-//                    new PostVideoContent(user_id, video_sample_id, videoContentTitle).execute();
-//                    uploadVideoContentFile();
+                    Intent intent = new Intent();
+                    intent.setClass(ShareActivity.this, LoadingActivity.class);
+                    intent.putExtra("videoContentTitle", videoContentTitle);
+                    intent.putExtra("videoSampleId", videoSampleId);
+                    startActivity(intent);
+
+
+                    //below for test
+
+//                    File file = new File(ApplicationParameter.FILE_SAVE_PATH);
+//                    String fileName = UUID.randomUUID().toString() + "_" + UUID.randomUUID() + "_" + System.currentTimeMillis() + ".mp4";
+//                    new PostVideoContent(user_id, 1, videoContentTitle, fileName).execute();
+//                    new BackgroundUploader(ShareActivity.this, Api.baseUrl + "upload_video_content_file.php", file, fileName).execute();
 //                    ApplicationService.verifyStoragePermissions(ShareActivity.this);
 //                    Intent intent = new Intent();
 //                    intent.setType("video/*");
 //                    intent.setAction(Intent.ACTION_GET_CONTENT);
 //                    startActivityForResult(Intent.createChooser(intent, "Complete action using"), POST);
-                    File file = new File(videoContentPath);
-                    new PostVideoContent(user_id, videoSampleId, videoContentTitle, "fuck.mp4").execute();
-                    new BackgroundUploader(ShareActivity.this, Api.baseUrl + "upload_video_content_file.php", file).execute();
                 }
             });
-        }else if(getIntent().getStringExtra("video_content_id") != null){
-            postVideoContentImg.setEnabled(false);
-        }else if(getIntent().getStringExtra("video_sample_id") != null){
-            postVideoContentImg.setEnabled(false);
+        }else{
+            postVideoContentTxt.setBackground(getResources().getDrawable(R.drawable.layout_border_not_post_textview));
+            postVideoContentTxt.setEnabled(false);
         }
 
         backTxt.setOnClickListener(new View.OnClickListener() {
@@ -205,9 +206,8 @@ public class ShareActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 ApplicationService.verifyStoragePermissions(ShareActivity.this);
-                Uri videoFileUri = Uri.parse(Environment
-                        .getExternalStorageDirectory().toString()
-                        + "/share_content.mp4");
+                File file = new File(ApplicationParameter.FILE_SAVE_PATH);
+                Uri videoFileUri = Uri.fromFile(file);
                 ShareVideo video = new ShareVideo.Builder()
                         .setLocalUrl(videoFileUri)
                         .build();
@@ -216,6 +216,12 @@ public class ShareActivity extends BaseActivity {
                         .build();
 
                 shareDialog.show(content, ShareDialog.Mode.AUTOMATIC);
+
+//                ApplicationService.verifyStoragePermissions(ShareActivity.this);
+//                Intent intent = new Intent();
+//                intent.setType("video/*");
+//                intent.setAction(Intent.ACTION_GET_CONTENT);
+//                startActivityForResult(Intent.createChooser(intent, "Complete action using"), POST);
             }
         });
 
@@ -223,9 +229,8 @@ public class ShareActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 ApplicationService.verifyStoragePermissions(ShareActivity.this);
-                Uri videoFileUri = Uri.parse(Environment
-                        .getExternalStorageDirectory().toString()
-                        + "/share_content.mp4");
+                File file = new File(ApplicationParameter.FILE_SAVE_PATH);
+                Uri videoFileUri = Uri.fromFile(file);
                 ShareVideo video = new ShareVideo.Builder()
                         .setLocalUrl(videoFileUri)
                         .build();
@@ -240,13 +245,14 @@ public class ShareActivity extends BaseActivity {
         IGBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Uri videoFileUri = Uri.parse(Environment
-                        .getExternalStorageDirectory().toString()
-                        + "/share_content.mp4");
+                File file = new File(ApplicationParameter.FILE_SAVE_PATH);
+                Uri videoFileUri = Uri.fromFile(file);
+
                 String type = "video/*";
                 // Create the new Intent using the 'Send' action.
                 Intent share = new Intent(Intent.ACTION_SEND);
                 share.setPackage("com.instagram.android");
+
 
                 // Set the MIME type
                 share.setType(type);
@@ -262,49 +268,131 @@ public class ShareActivity extends BaseActivity {
         lineBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ApplicationService.verifyStoragePermissions(ShareActivity.this);
-                Intent intent = new Intent();
-                intent.setType("video/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent, "Complete action using"), LINE_SHARE);
+                File file = new File(ApplicationParameter.FILE_SAVE_PATH);
+                Uri videoFileUri = Uri.fromFile(file);
+
+                String type = "video/*";
+                // Create the new Intent using the 'Send' action.
+                Intent share = new Intent(Intent.ACTION_SEND);
+
+                share.setPackage("jp.naver.line.android");
+
+                // Set the MIME type
+                share.setType(type);
+
+                // Add the URI to the Intent.
+                share.putExtra(Intent.EXTRA_STREAM, videoFileUri);
+
+                // Broadcast the Intent.
+                startActivity(Intent.createChooser(share, "Share to"));
             }
         });
 
         weiboBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ApplicationService.verifyStoragePermissions(ShareActivity.this);
-                Intent intent = new Intent();
-                intent.setType("video/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent, "Complete action using"), WEIBO_SHARE);
+                File file = new File(ApplicationParameter.FILE_SAVE_PATH);
+                Uri videoFileUri = Uri.fromFile(file);
+
+                String type = "video/*";
+                // Create the new Intent using the 'Send' action.
+                Intent share = new Intent(Intent.ACTION_SEND);
+
+                share.setPackage("com.sina.weibo");
+
+                // Set the MIME type
+                share.setType(type);
+
+                // Add the URI to the Intent.
+                share.putExtra(Intent.EXTRA_STREAM, videoFileUri);
+
+                // Broadcast the Intent.
+                startActivity(Intent.createChooser(share, "Share to"));
             }
         });
 
         wechatBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ApplicationService.verifyStoragePermissions(ShareActivity.this);
-                Intent intent = new Intent();
-                intent.setType("video/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent, "Complete action using"), WECHAT_SHARE);
+                File file = new File(ApplicationParameter.FILE_SAVE_PATH);
+                Uri videoFileUri = Uri.fromFile(file);
+
+                String type = "video/*";
+                // Create the new Intent using the 'Send' action.
+                Intent share = new Intent(Intent.ACTION_SEND);
+                share.setPackage("com.tencent.mm");
+
+                // Set the MIME type
+                share.setType(type);
+
+                // Add the URI to the Intent.
+                share.putExtra(Intent.EXTRA_STREAM, videoFileUri);
+
+                // Broadcast the Intent.
+                startActivity(Intent.createChooser(share, "Share to"));
+            }
+        });
+
+        youTubeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                File file = new File(ApplicationParameter.FILE_SAVE_PATH);
+                Uri videoFileUri = Uri.fromFile(file);
+
+                String type = "video/*";
+                // Create the new Intent using the 'Send' action.
+                Intent share = new Intent(Intent.ACTION_SEND);
+                share.setPackage("com.google.android.youtube");
+
+                // Set the MIME type
+                share.setType(type);
+
+                // Add the URI to the Intent.
+                share.putExtra(Intent.EXTRA_STREAM, videoFileUri);
+
+                // Broadcast the Intent.
+                startActivity(Intent.createChooser(share, "Share to"));
             }
         });
 
         otherBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ApplicationService.verifyStoragePermissions(ShareActivity.this);
-                Intent intent = new Intent();
-                intent.setType("video/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent, "Complete action using"), OTHER_SHARE);
+                File file = new File(ApplicationParameter.FILE_SAVE_PATH);
+                Uri videoFileUri = Uri.fromFile(file);
+
+                String type = "video/*";
+                // Create the new Intent using the 'Send' action.
+                Intent share = new Intent(Intent.ACTION_SEND);
+
+                // Set the MIME type
+                share.setType(type);
+
+                // Add the URI to the Intent.
+                share.putExtra(Intent.EXTRA_STREAM, videoFileUri);
+
+                // Broadcast the Intent.
+                startActivity(Intent.createChooser(share, "Share to"));
             }
         });
 
 
 
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+
+        //below for test
+
+//        final Uri selectedImageUri = data.getData();
+//        String imagepath = getPath(this, selectedImageUri);
+//        File imageFile = new File(imagepath);
+//        String fileName = UUID.randomUUID().toString() + "_" + UUID.randomUUID() + "_" + System.currentTimeMillis() + ".mp4";
+//        new PostVideoContent(user_id, 1, videoContentTitle, fileName).execute();
+//        new BackgroundUploader(this, Api.baseUrl + "upload_video_content_file.php", imageFile, fileName).execute();
     }
 
     class PostVideoContent extends AsyncTask<String, String, String> {
@@ -383,48 +471,6 @@ public class ShareActivity extends BaseActivity {
     }
 
 
-    public void uploadVideoContentFile(){
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-
-                File f  = new File("");
-                String content_type  = getMimeType(f.getPath());
-
-                String file_path = f.getAbsolutePath();
-                OkHttpClient client = new OkHttpClient();
-                RequestBody file_body = RequestBody.create(MediaType.parse(content_type),f);
-
-                RequestBody request_body = new MultipartBody.Builder()
-                        .setType(MultipartBody.FORM)
-                        .addFormDataPart("type",content_type)
-                        .addFormDataPart("uploaded_file",file_path.substring(file_path.lastIndexOf("/")+1), file_body)
-                        .build();
-
-                Request request = new Request.Builder()
-                        .url(Api.baseUrl + "upload_video_content_file.php")
-                        .post(request_body)
-                        .build();
-
-                try {
-                    Response response = client.newCall(request).execute();
-
-                    if(!response.isSuccessful()){
-                        throw new IOException("Error : "+response);
-                    }
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-
-            }
-        });
-
-        t.start();
-    }
-
-
     private String getMimeType(String path) {
 
         String extension = MimeTypeMap.getFileExtensionFromUrl(path);
@@ -483,122 +529,6 @@ public class ShareActivity extends BaseActivity {
 
         }
     };
-
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (resultCode != RESULT_OK)
-            return;
-
-        if (requestCode == FB_SHARE) {
-            Uri videoFileUri = data.getData();
-            ShareVideo video = new ShareVideo.Builder()
-                    .setLocalUrl(videoFileUri)
-                    .build();
-            ShareVideoContent content = new ShareVideoContent.Builder()
-                    .setVideo(video)
-                    .build();
-
-            shareDialog.show(content, ShareDialog.Mode.AUTOMATIC);
-        }else if(requestCode == MESSAGE_SHARE){
-            Uri videoFileUri = data.getData();
-            ShareVideo video = new ShareVideo.Builder()
-                    .setLocalUrl(videoFileUri)
-                    .build();
-            ShareVideoContent content = new ShareVideoContent.Builder()
-                    .setVideo(video)
-                    .build();
-
-            msgDialog.show(content);
-        }else if(requestCode == IG_SHARE){
-            Uri videoFileUri = data.getData();
-            String type = "video/*";
-            // Create the new Intent using the 'Send' action.
-            Intent share = new Intent(Intent.ACTION_SEND);
-            share.setPackage("com.instagram.android");
-
-            // Set the MIME type
-            share.setType(type);
-
-            // Add the URI to the Intent.
-            share.putExtra(Intent.EXTRA_STREAM, videoFileUri);
-
-            // Broadcast the Intent.
-            startActivity(Intent.createChooser(share, "Share to"));
-        }else if(requestCode == LINE_SHARE){
-            Uri videoFileUri = data.getData();
-            String type = "video/*";
-            // Create the new Intent using the 'Send' action.
-            Intent share = new Intent(Intent.ACTION_SEND);
-            share.setPackage("jp.naver.line.android");
-
-            // Set the MIME type
-            share.setType(type);
-
-            // Add the URI to the Intent.
-            share.putExtra(Intent.EXTRA_STREAM, videoFileUri);
-
-            // Broadcast the Intent.
-            startActivity(Intent.createChooser(share, "Share to"));
-        }
-        else if(requestCode == WEIBO_SHARE){
-            Uri videoFileUri = data.getData();
-            String type = "video/*";
-            // Create the new Intent using the 'Send' action.
-            Intent share = new Intent(Intent.ACTION_SEND);
-            share.setPackage("com.sina.weibo");
-
-            // Set the MIME type
-            share.setType(type);
-
-            // Add the URI to the Intent.
-            share.putExtra(Intent.EXTRA_STREAM, videoFileUri);
-
-            // Broadcast the Intent.
-            startActivity(Intent.createChooser(share, "Share to"));
-        }else if(requestCode == WECHAT_SHARE){
-            Uri videoFileUri = data.getData();
-            String type = "video/*";
-            // Create the new Intent using the 'Send' action.
-            Intent share = new Intent(Intent.ACTION_SEND);
-            share.setPackage("com.tencent.mm");
-
-            // Set the MIME type
-            share.setType(type);
-
-            // Add the URI to the Intent.
-            share.putExtra(Intent.EXTRA_STREAM, videoFileUri);
-
-            // Broadcast the Intent.
-            startActivity(Intent.createChooser(share, "Share to"));
-        }
-        else if(requestCode == OTHER_SHARE){
-            Uri videoFileUri = data.getData();
-            String type = "video/*";
-            // Create the new Intent using the 'Send' action.
-            Intent share = new Intent(Intent.ACTION_SEND);
-
-            // Set the MIME type
-            share.setType(type);
-
-            // Add the URI to the Intent.
-            share.putExtra(Intent.EXTRA_STREAM, videoFileUri);
-
-            // Broadcast the Intent.
-            startActivity(Intent.createChooser(share, "Share to"));
-            System.out.println("fuck " + getPath(ShareActivity.this, data.getData()));
-        }
-        else {
-            // Call callbackManager.onActivityResult to pass login result to the LoginManager via callbackManager.
-            callbackManager.onActivityResult(requestCode, resultCode, data);
-            new PostVideoContent(user_id, videoSampleId, videoContentTitle, getPath(ShareActivity.this, data.getData())).execute();
-            File file = new File(getPath(ShareActivity.this, data.getData()));
-            new BackgroundUploader(ShareActivity.this, Api.baseUrl + "upload_video_content_file.php", file).execute();
-        }
-
-    }
 
     public String getPath(final Context context, final Uri uri) {
 
@@ -679,11 +609,13 @@ public class ShareActivity extends BaseActivity {
         private Context context;
         private String url;
         private File file;
+        private String fileName;
 
-        public BackgroundUploader(Context context, String url, File file) {
+        public BackgroundUploader(Context context, String url, File file, String fileName) {
             this.context = context;
             this.url = url;
             this.file = file;
+            this.fileName = fileName;
         }
 
         @Override
@@ -700,7 +632,6 @@ public class ShareActivity extends BaseActivity {
         protected Void doInBackground(Void... v) {
             HttpURLConnection.setFollowRedirects(false);
             HttpURLConnection connection = null;
-            String fileName = file.getName();
             try {
                 connection = (HttpURLConnection) new URL(url).openConnection();
                 connection.setRequestMethod("POST");
@@ -776,10 +707,10 @@ public class ShareActivity extends BaseActivity {
         @Override
         protected void onPostExecute(Void v) {
             progressDialog.dismiss();
-            Intent intent = new Intent(ShareActivity.this, MainActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
+//            Intent intent = new Intent(ShareActivity.this, MainActivity.class);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//            startActivity(intent);
         }
 
         @Override
@@ -787,93 +718,5 @@ public class ShareActivity extends BaseActivity {
             cancel(true);
             dialog.dismiss();
         }
-    }
-
-    public static class DownloadFileFromURL extends AsyncTask<String, String, String> {
-        String imageURL;
-
-        public DownloadFileFromURL(String imageURL){
-            this.imageURL = imageURL;
-        }
-
-        /**
-         * Before starting background thread Show Progress Bar Dialog
-         * */
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-//            showDialog(progress_bar_type);
-        }
-
-        /**
-         * Downloading file in background thread
-         * */
-        @Override
-        protected String doInBackground(String... f_url) {
-            int count;
-            try {
-                URL url = new URL(imageURL);
-                URLConnection conection = url.openConnection();
-                conection.connect();
-
-                // this will be useful so that you can show a tipical 0-100%
-                // progress bar
-                int lenghtOfFile = conection.getContentLength();
-
-                // download the file
-                InputStream input = new BufferedInputStream(url.openStream(),
-                        8192);
-
-                // Output stream
-                OutputStream output = new FileOutputStream(Environment
-                        .getExternalStorageDirectory().toString()
-                        + "/share_content.mp4");
-
-                byte data[] = new byte[1024];
-
-                long total = 0;
-
-                while ((count = input.read(data)) != -1) {
-                    total += count;
-                    // publishing the progress....
-                    // After this onProgressUpdate will be called
-                    publishProgress("" + (int) ((total * 100) / lenghtOfFile));
-
-                    // writing data to file
-                    output.write(data, 0, count);
-                }
-
-                // flushing output
-                output.flush();
-
-                // closing streams
-                output.close();
-                input.close();
-
-            } catch (Exception e) {
-                Log.e("Error: ", e.getMessage());
-            }
-
-            return null;
-        }
-
-        /**
-         * Updating progress bar
-         * */
-        protected void onProgressUpdate(String... progress) {
-            // setting progress percentage
-//            pDialog.setProgress(Integer.parseInt(progress[0]));
-        }
-
-        /**
-         * After completing background task Dismiss the progress dialog
-         * **/
-        @Override
-        protected void onPostExecute(String file_url) {
-            // dismiss the dialog after the file was downloaded
-//            dismissDialog(progress_bar_type);
-
-        }
-
     }
 }
