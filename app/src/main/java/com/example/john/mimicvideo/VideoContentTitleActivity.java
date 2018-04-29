@@ -40,7 +40,7 @@ public class VideoContentTitleActivity extends BaseActivity {
     private EditText videoContentEdit;
     private ImageView toShareImg;
     private TextView backTxt;
-    private int video_sample_id;
+    private int videoSampleId;
 
     @Override
     public void onPause() {
@@ -80,7 +80,7 @@ public class VideoContentTitleActivity extends BaseActivity {
         toShareImg = findViewById(R.id.toShareImg);
         backTxt = findViewById(R.id.backTxt);
 
-        video_sample_id = getIntent().getIntExtra("video_sample_id", 0);
+        videoSampleId = getIntent().getIntExtra("videoSampleId", 0);
 
         showVideo();
 
@@ -97,7 +97,7 @@ public class VideoContentTitleActivity extends BaseActivity {
             public void onClick(View view) {
                 Intent intent = new Intent();
                 intent.putExtra("videoContentTitle", videoContentEdit.getText().toString());
-                intent.putExtra("videoSampleId", video_sample_id);
+                intent.putExtra("videoSampleId", videoSampleId);
                 intent.setClass(VideoContentTitleActivity.this, ShareActivity.class);
                 startActivity(intent);
             }
