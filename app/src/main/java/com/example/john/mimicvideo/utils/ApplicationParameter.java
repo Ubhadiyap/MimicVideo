@@ -10,4 +10,7 @@ public class ApplicationParameter {
     //below for loading activity go .
     public static int TO_RECORD = 0;
     public static int TO_SHARE = 1;
+
+    //below for file save path
+    public static String FILE_SAVE_PATH = "/storage/emulated/0/share_content.mp4";
 }
