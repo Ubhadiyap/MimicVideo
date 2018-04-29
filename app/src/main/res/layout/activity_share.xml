@@ -30,13 +30,15 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:gravity="center_vertical">
 
         <LinearLayout
             android:id="@+id/row1"
             android:layout_width="match_parent"
             android:layout_height="80dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:orientation="horizontal">
 
             <ImageView
@@ -44,7 +46,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:paddingLeft="20dp"
                 app:srcCompat="@drawable/com_facebook_button_icon_blue" />
 
             <ImageView
@@ -52,16 +53,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:paddingLeft="20dp"
                 app:srcCompat="@drawable/com_facebook_button_send_icon_blue" />
 
             <ImageView
                 android:id="@+id/IGBtn"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:paddingLeft="20dp"
-                app:srcCompat="@drawable/com_facebook_button_icon_blue" />
+                android:layout_weight="1" />
 
             <ImageView
                 android:id="@+id/lineBtn"
@@ -70,8 +68,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentTop="true"
                 android:layout_weight="1"
-                android:paddingLeft="20dp"
-                app:srcCompat="@drawable/com_facebook_button_icon_blue" />
+                app:srcCompat="@drawable/line" />
 
         </LinearLayout>
 
@@ -80,6 +77,8 @@
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:layout_below="@+id/row1"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
             android:orientation="horizontal">
 
@@ -88,14 +87,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                app:srcCompat="@drawable/com_facebook_button_icon_blue" />
+                app:srcCompat="@drawable/weibo" />
 
             <ImageView
                 android:id="@+id/wechatBtn"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                app:srcCompat="@drawable/com_facebook_button_icon_blue" />
+                app:srcCompat="@drawable/wechat" />
+
+            <ImageView
+                android:id="@+id/youtubeBtn"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/youtube" />
 
             <ImageView
                 android:id="@+id/otherBtn"
@@ -105,25 +111,19 @@
                 app:srcCompat="@drawable/com_facebook_button_send_icon_blue" />
         </LinearLayout>
 
-        <ImageView
-            android:id="@+id/youtubeBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/com_facebook_button_background" />
-
-        <ImageView
-            android:id="@+id/QQBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/com_facebook_button_background" />
-
-        <ImageView
-            android:id="@+id/postVideoContentImg"
+        <TextView
+            android:id="@+id/postVideoContentTxt"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            app:srcCompat="@drawable/com_facebook_button_icon_blue" />
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/layout_border_post_textview"
+            android:gravity="center"
+            android:text="發布娛樂"
+            android:textColor="@android:color/white" />
 
     </RelativeLayout>
 </LinearLayout>
