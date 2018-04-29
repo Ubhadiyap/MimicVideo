@@ -317,7 +317,7 @@ public class MainFragment extends Fragment {
                         VideoContent videoContent = new VideoContent();
                         videoContent.id = videoContentJSONArray.optJSONObject(i).optInt("id");
                         videoContent.videoSampleId = videoContentJSONArray.optJSONObject(i).optInt("video_sample_id");
-                        videoContent.videoSampleUrl = videoContentJSONArray.optJSONObject(i).optString("video_sample_path5 ");
+                        videoContent.videoSampleUrl = videoContentJSONArray.optJSONObject(i).optString("video_sample_path");
                         User user = new User();
                         JSONObject userJsonObject = videoContentJSONArray.optJSONObject(i).optJSONObject("user");
                         user.id = userJsonObject.optInt("id");
