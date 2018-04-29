@@ -1,5 +1,6 @@
 package com.example.john.mimicvideo.utils;
 
+
 /**
  * Created by john on 2018/4/27.
  */
