@@ -140,8 +140,9 @@ public class LoginActivity extends BaseActivity {
                 }
                 else{
                     System.out.println("CurrentAccessToken : "+ AccessToken.getCurrentAccessToken().getToken());
-                    Intent intent = new Intent();
-                    intent.setClass(LoginActivity.this, ProfileActivity.class);
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
 
                 }
@@ -208,10 +209,10 @@ public class LoginActivity extends BaseActivity {
                     sharePreferenceDB.putInt("id", json.optInt("id"));
                     sharePreferenceDB.putString("name",  jsonObject.optString("name"));
                     sharePreferenceDB.putString("profile", profile);
-                    Intent intent = new Intent();
-                    intent.setClass(LoginActivity.this, ProfileActivity.class);
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
-                    finish();
                 }else{
                     Log.d(TAG, "登入失敗1，請重新登入");
                     loginManager.logOut();
