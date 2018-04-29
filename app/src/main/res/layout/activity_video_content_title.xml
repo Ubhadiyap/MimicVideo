@@ -31,14 +31,6 @@
             android:text="0"
             android:textSize="@dimen/icon_text_size" />
 
-        <ImageView
-            android:id="@+id/videoPlayIconImg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:background="@drawable/play_button" />
-
     </RelativeLayout>
 
     <LinearLayout
@@ -62,8 +54,7 @@
             android:layout_weight="1"
             android:ems="10"
             android:inputType="textPersonName"
-            android:maxLength="20"
-            android:text="Name" />
+            android:maxLength="20" />
 
         <ImageView
             android:id="@+id/toShareImg"
