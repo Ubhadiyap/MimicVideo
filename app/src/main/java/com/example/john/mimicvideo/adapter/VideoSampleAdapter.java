@@ -73,7 +73,7 @@ public class VideoSampleAdapter extends RecyclerView.Adapter<VideoSampleAdapter.
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent();
-                intent.putExtra("video_sample_id", videoSampleList.get(position).id);
+                intent.putExtra("videoSampleId", videoSampleList.get(position).id);
                 intent.putExtra("video_sample_url", videoSampleList.get(position).url);
                 intent.setClass(context, LoadingActivity.class);
                 context.startActivity(intent);
