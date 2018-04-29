@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.VideoView;
 
+import com.example.john.mimicvideo.utils.ApplicationParameter;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.LoadControl;
@@ -36,8 +37,7 @@ public class VideoContentTitleActivity extends AppCompatActivity {
     private EditText videoContentEdit;
     private ImageView toShareImg;
     private TextView backTxt;
-    private String video_sample_id;
-    private String videoContentPath;
+    private int video_sample_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +49,8 @@ public class VideoContentTitleActivity extends AppCompatActivity {
         toShareImg = findViewById(R.id.toShareImg);
         backTxt = findViewById(R.id.backTxt);
 
-        videoContentPath = getIntent().getStringExtra("videoContentPath");
+        video_sample_id = getIntent().getIntExtra("video_sample_id", 0);
+
         showVideo();
 
 
@@ -66,7 +67,6 @@ public class VideoContentTitleActivity extends AppCompatActivity {
                 Intent intent = new Intent();
                 intent.putExtra("videoContentTitle", videoContentEdit.getText().toString());
                 intent.putExtra("video_sample_id", video_sample_id);
-                intent.putExtra("videoContentPath", videoContentPath);
                 intent.setClass(VideoContentTitleActivity.this, ShareActivity.class);
                 startActivity(intent);
             }
@@ -104,13 +104,13 @@ public class VideoContentTitleActivity extends AppCompatActivity {
         MediaSource videoSource;
         // test hls
         //url="http://hls.videocc.net/ce0812b122/c/ce0812b122c492470605bc47d3388a09_3.m3u8";
-        if(videoContentPath.contains(".m3u8")){
+        if(ApplicationParameter.FILE_SAVE_PATH.contains(".m3u8")){
 //            videoSource =new HlsMediaSource(Uri.parse(url),dataSourceFactory,null,null);
-            videoSource = new ExtractorMediaSource(Uri.parse(videoContentPath),
+            videoSource = new ExtractorMediaSource(Uri.parse(ApplicationParameter.FILE_SAVE_PATH),
                     dataSourceFactory, extractorsFactory, null, null);
         }else{
             //test mp4
-            videoSource = new ExtractorMediaSource(Uri.parse(videoContentPath),
+            videoSource = new ExtractorMediaSource(Uri.parse(ApplicationParameter.FILE_SAVE_PATH),
                     dataSourceFactory, extractorsFactory, null, null);
         }
 
