@@ -2,8 +2,11 @@ package com.example.john.mimicvideo;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -30,7 +33,7 @@ import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
-public class VideoContentTitleActivity extends AppCompatActivity {
+public class VideoContentTitleActivity extends BaseActivity {
     private String TAG = VideoContentTitleActivity.class.getSimpleName();
     private SimpleExoPlayerView videoContentPlayerView;
     private ImageView saveVideoContentImg;
@@ -38,6 +41,34 @@ public class VideoContentTitleActivity extends AppCompatActivity {
     private ImageView toShareImg;
     private TextView backTxt;
     private int video_sample_id;
+
+    @Override
+    public void onPause() {
+        super.onPause();  // Always call the superclass method first
+
+        // Release the Camera because we don't need it when paused
+        // and other activities might need to use it.
+        if(videoContentPlayerView.getPlayer() != null){
+            videoContentPlayerView.getPlayer().setPlayWhenReady(false);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();  // Always call the superclass method first
+
+        if(videoContentPlayerView.getPlayer() != null){
+            videoContentPlayerView.getPlayer().setPlayWhenReady(true);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(videoContentPlayerView.getPlayer() != null) {
+            videoContentPlayerView.getPlayer().release();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +97,7 @@ public class VideoContentTitleActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent();
                 intent.putExtra("videoContentTitle", videoContentEdit.getText().toString());
-                intent.putExtra("video_sample_id", video_sample_id);
+                intent.putExtra("videoSampleId", video_sample_id);
                 intent.setClass(VideoContentTitleActivity.this, ShareActivity.class);
                 startActivity(intent);
             }
@@ -76,6 +107,29 @@ public class VideoContentTitleActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 finish();
+            }
+        });
+
+        final GestureDetector gestureDetector = new
+                GestureDetector(VideoContentTitleActivity.this,
+                new GestureDetector.SimpleOnGestureListener() {
+                    @Override
+                    public boolean onSingleTapConfirmed(MotionEvent e) {
+                        if (videoContentPlayerView.getPlayer().getPlayWhenReady()) {
+                            videoContentPlayerView.getPlayer().setPlayWhenReady(false);
+                        } else {
+                            videoContentPlayerView.getPlayer().setPlayWhenReady(true);
+                        }
+                        return true;
+                    }
+                }
+        );
+
+        videoContentPlayerView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, @NonNull MotionEvent event) {
+                gestureDetector.onTouchEvent(event);
+                return true;
             }
         });
 
@@ -115,5 +169,7 @@ public class VideoContentTitleActivity extends AppCompatActivity {
         }
 
         player.prepare(videoSource);
+        player.setRepeatMode(1);
+        player.setPlayWhenReady(true);
     }
 }
