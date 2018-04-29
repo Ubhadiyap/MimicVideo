@@ -127,7 +127,7 @@ public class VideoSampleActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent();
-                intent.setClass(VideoSampleActivity.this, CameraElementActivity.class);
+                intent.setClass(VideoSampleActivity.this, FantasticCameraActivity.class);
                 startActivity(intent);
             }
         });
