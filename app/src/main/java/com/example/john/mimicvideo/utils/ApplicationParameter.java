@@ -13,5 +13,6 @@ public class ApplicationParameter {
     public static int TO_SHARE = 1;
 
     //below for file save path
-    public static String FILE_SAVE_PATH = "/storage/emulated/0/share_content.mp4";
+    //public static String FILE_SAVE_PATH = "/storage/emulated/0/share_content.mp4";
+    public static String FILE_SAVE_PATH = "/storage/emulated/0/CrazyTalk/share_content.mp4";
 }
