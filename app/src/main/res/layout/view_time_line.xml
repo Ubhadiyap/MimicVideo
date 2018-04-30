@@ -47,19 +47,19 @@
             android:secondaryProgress="0"
             android:thumb="@drawable/apptheme_text_select_handle_middle" />
 
-        <life.knowledge4.videotrimmer.view.ProgressBarView
+        <com.example.john.mimicvideo.view.VideoTrimmer.view.ProgressBarView
             android:id="@+id/timeVideoView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/handlerTop"/>
 
-        <life.knowledge4.videotrimmer.view.TimeLineView
+        <com.example.john.mimicvideo.view.VideoTrimmer.view.TimeLineView
             android:id="@+id/timeLineView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/timeVideoView"/>
 
-        <life.knowledge4.videotrimmer.view.RangeSeekBarView
+        <com.example.john.mimicvideo.view.VideoTrimmer.view.RangeSeekBarView
             android:id="@+id/timeLineBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
