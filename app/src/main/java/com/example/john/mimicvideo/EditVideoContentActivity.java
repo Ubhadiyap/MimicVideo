@@ -129,7 +129,7 @@ public class EditVideoContentActivity extends BaseActivity {
 
 
         backTxt.setTypeface(ApplicationService.getFont());
-        backTxt.setText(R.string.fa_caret_left);
+        backTxt.setText(R.string.fa_angle_left);
         backTxt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
