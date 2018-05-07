@@ -69,7 +69,7 @@ public class OtherProfileActivity extends BaseActivity {
         userVideoContentRV = findViewById(R.id.userVideoContentRV);
 
         backTxt.setTypeface(ApplicationService.getFont());
-        backTxt.setText(getString(R.string.fa_caret_left));
+        backTxt.setText(getString(R.string.fa_angle_left));
 
         id = getIntent().getIntExtra("id",0);
         name = getIntent().getStringExtra("name");
