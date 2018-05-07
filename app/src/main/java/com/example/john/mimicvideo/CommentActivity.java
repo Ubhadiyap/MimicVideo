@@ -58,7 +58,7 @@ public class CommentActivity extends BaseActivity {
         user_id = sharePreferenceDB.getInt("id");
 
         backTxt.setTypeface(ApplicationService.getFont());
-        backTxt.setText(getString(R.string.fa_caret_left));
+        backTxt.setText(getString(R.string.fa_angle_left));
         backTxt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
