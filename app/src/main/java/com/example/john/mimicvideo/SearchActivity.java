@@ -53,7 +53,7 @@ public class SearchActivity extends BaseActivity {
         setContentView(R.layout.activity_search);
         backTxt = findViewById(R.id.backTxt);
         backTxt.setTypeface(ApplicationService.getFont());
-        backTxt.setText(getString(R.string.fa_caret_left));
+        backTxt.setText(getString(R.string.fa_angle_left));
 
         keyWordEdit = findViewById(R.id.keyWordEdit);
         searchVideoContentRV = findViewById(R.id.searchVideoContentRV);
