@@ -61,7 +61,7 @@ public class VideoSampleActivity extends BaseActivity {
         toCameraImg = findViewById(R.id.toCameraImg);
 
         backTxt.setTypeface(ApplicationService.getFont());
-        backTxt.setText(getString(R.string.fa_caret_left));
+        backTxt.setText(getString(R.string.fa_angle_left));
 
         GridLayoutManagerWithSmoothScroller layoutManager = new GridLayoutManagerWithSmoothScroller(VideoSampleActivity.this, 2);
         layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
