@@ -142,7 +142,7 @@ public class ShareActivity extends BaseActivity {
         otherBtn = findViewById(R.id.otherBtn);
 
         backTxt.setTypeface(ApplicationService.getFont());
-        backTxt.setText(R.string.fa_caret_left);
+        backTxt.setText(R.string.fa_angle_left);
 
         // Initialize facebook SDK.
         FacebookSdk.sdkInitialize(getApplicationContext());
