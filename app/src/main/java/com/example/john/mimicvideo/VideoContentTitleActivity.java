@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.VideoView;
 
 import com.example.john.mimicvideo.utils.ApplicationParameter;
+import com.example.john.mimicvideo.utils.ApplicationService;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.LoadControl;
@@ -103,6 +104,8 @@ public class VideoContentTitleActivity extends BaseActivity {
             }
         });
 
+        backTxt.setTypeface(ApplicationService.getFont());
+        backTxt.setText(R.string.fa_angle_left);
         backTxt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
