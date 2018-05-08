@@ -21,7 +21,7 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:27.1.0'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     testImplementation 'junit:junit:4.12'
@@ -32,25 +32,18 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.6.1'
     implementation 'com.facebook.android:facebook-login:[4,5)'
     implementation 'com.facebook.android:facebook-android-sdk:[4,5)'
-
-
-    compile 'com.writingminds:FFmpegAndroid:0.3.2' // for video edit
-
+    compile 'com.writingminds:FFmpegAndroid:0.3.2'
+    // for video edit
     compile 'com.android.support:multidex:1.0.1'
-
     implementation 'com.google.android.exoplayer:exoplayer-core:2.6.0'
     implementation 'com.google.android.exoplayer:exoplayer-dash:2.6.0'
     implementation 'com.google.android.exoplayer:exoplayer-ui:2.6.0'
-
     compile 'com.writingminds:FFmpegAndroid:0.3.2'
-
     compile 'com.googlecode.mp4parser:isoparser:1.1.20'
-
     //below for fast networking job
     compile 'com.amitshekhar.android:android-networking:1.0.1'
     compile 'com.amitshekhar.android:jackson-android-networking:1.0.1'
     compile 'com.squareup.okhttp3:okhttp:3.10.0'
-
     compile 'com.daimajia.numberprogressbar:library:1.4@aar'// for progress bar
-
+    implementation project(':WeiXinRecorded')
 }
