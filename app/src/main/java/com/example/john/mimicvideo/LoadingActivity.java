@@ -65,13 +65,11 @@ public class LoadingActivity extends BaseActivity {
         if(getIntent().getStringExtra("video_sample_url") != null){
             int videoSampleId = getIntent().getIntExtra("videoSampleId", 0);
             String videoSampleUrl = getIntent().getStringExtra("video_sample_url");
-            downLoadFileFromUrl(videoSampleUrl, Environment
-                    .getExternalStorageDirectory().toString(), "share_content.mp4", videoSampleId);
+            downLoadFileFromUrl(videoSampleUrl, ApplicationParameter.FILE_FOLDER_SAVE_PATH, "share_content.mp4", videoSampleId);
         }else if(getIntent().getStringExtra("videoContentUrl") != null){
             int videoSampleId = 0;
             String videoContentUrl = getIntent().getStringExtra("videoContentUrl");
-            downLoadFileFromUrl(videoContentUrl, Environment
-                    .getExternalStorageDirectory().toString(), "share_content.mp4", 0);
+            downLoadFileFromUrl(videoContentUrl, ApplicationParameter.FILE_FOLDER_SAVE_PATH, "share_content.mp4", 0);
         }else if(getIntent().getStringExtra("cameraVideoUrl") != null){
             int videoSampleId = 0;
             String cameraVideoUrl = getIntent().getStringExtra("cameraVideoUrl");
