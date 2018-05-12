@@ -70,9 +70,13 @@ public class CommentActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 if(user_id != 0){
-                    new CreateComment(user_id, video_content_id, createCommentEdit.getText().toString()).execute();
-                    createCommentEdit.setText("");
-                    hideSoftKeyboard(CommentActivity.this, createCommentEdit);
+                    if(!createCommentEdit.getText().toString().trim().equals("")){
+                        new CreateComment(user_id, video_content_id, createCommentEdit.getText().toString()).execute();
+                        createCommentEdit.setText("");
+                        hideSoftKeyboard(CommentActivity.this, createCommentEdit);
+                    }else{
+                        Toast.makeText(CommentActivity.this, "開嘴怎能沒話", Toast.LENGTH_SHORT).show();
+                    }
                 }else{
                     Intent intent = new Intent();
                     intent.setClass(CommentActivity.this, LoginActivity.class);
