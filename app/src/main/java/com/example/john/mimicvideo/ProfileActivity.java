@@ -160,6 +160,13 @@ public class ProfileActivity extends BaseActivity {
         new GetUserLikeVideoContent(like_video_content_amount, sharePreferenceDB.getInt("id")).execute();
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        SharePreferenceDB sharePreferenceDB = new SharePreferenceDB(this);
+        new GetUserVideoContent(video_content_amount, sharePreferenceDB.getInt("id")).execute();
+    }
+
     class GetUserVideoContent extends AsyncTask<String, String, String> {
         int video_content_amount;
         int user_id;
