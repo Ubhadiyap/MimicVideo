@@ -65,11 +65,11 @@ public class LoadingActivity extends BaseActivity {
         if(getIntent().getStringExtra("video_sample_url") != null){
             int videoSampleId = getIntent().getIntExtra("videoSampleId", 0);
             String videoSampleUrl = getIntent().getStringExtra("video_sample_url");
-            downLoadFileFromUrl(videoSampleUrl, ApplicationParameter.FILE_FOLDER_SAVE_PATH, "share_content.mp4", videoSampleId);
+            downLoadFileFromUrl(videoSampleUrl, ApplicationParameter.FILE_FOLDER_SAVE_PATH, ApplicationParameter.FILE_SAVE_NAME, videoSampleId);
         }else if(getIntent().getStringExtra("videoContentUrl") != null){
             int videoSampleId = 0;
             String videoContentUrl = getIntent().getStringExtra("videoContentUrl");
-            downLoadFileFromUrl(videoContentUrl, ApplicationParameter.FILE_FOLDER_SAVE_PATH, "share_content.mp4", 0);
+            downLoadFileFromUrl(videoContentUrl, ApplicationParameter.FILE_FOLDER_SAVE_PATH, ApplicationParameter.FILE_SAVE_NAME, 0);
         }else if(getIntent().getStringExtra("cameraVideoUrl") != null){
             int videoSampleId = 0;
             String cameraVideoUrl = getIntent().getStringExtra("cameraVideoUrl");
@@ -83,7 +83,7 @@ public class LoadingActivity extends BaseActivity {
             int user_id = sharePreferenceDB.getInt("id");
             int videoSampleId = getIntent().getIntExtra("videoSampleId", 0);
             String videoContentTitle = getIntent().getStringExtra("videoContentTitle");
-            File file = new File(ApplicationParameter.FILE_SAVE_PATH);
+            File file = new File(ApplicationParameter.FINALLY_FILE_SAVE_PATH);
             String fileName = UUID.randomUUID().toString() + "_" + UUID.randomUUID() + "_" + System.currentTimeMillis() + ".mp4";
             new PostVideoContent(user_id, videoSampleId, videoContentTitle, fileName).execute();
             new BackgroundUploader(LoadingActivity.this, Api.baseUrl + "upload_video_content_file.php", file, fileName).execute();
