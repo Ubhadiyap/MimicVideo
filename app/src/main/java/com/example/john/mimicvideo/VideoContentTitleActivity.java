@@ -11,10 +11,12 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.example.john.mimicvideo.utils.ApplicationParameter;
 import com.example.john.mimicvideo.utils.ApplicationService;
+import com.example.john.mimicvideo.utils.SharePreferenceDB;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.LoadControl;
@@ -42,6 +44,7 @@ public class VideoContentTitleActivity extends BaseActivity {
     private ImageView toShareImg;
     private TextView backTxt;
     private int videoSampleId;
+    private SharePreferenceDB sharePreferenceDB;
 
     @Override
     public void onPause() {
@@ -80,6 +83,7 @@ public class VideoContentTitleActivity extends BaseActivity {
         videoContentEdit = findViewById(R.id.videoContentEdit);
         toShareImg = findViewById(R.id.toShareImg);
         backTxt = findViewById(R.id.backTxt);
+        sharePreferenceDB = new SharePreferenceDB(this);
 
         videoSampleId = getIntent().getIntExtra("videoSampleId", 0);
 
@@ -96,11 +100,21 @@ public class VideoContentTitleActivity extends BaseActivity {
         toShareImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent();
-                intent.putExtra("videoContentTitle", videoContentEdit.getText().toString());
-                intent.putExtra("videoSampleId", videoSampleId);
-                intent.setClass(VideoContentTitleActivity.this, ShareActivity.class);
-                startActivity(intent);
+                if(sharePreferenceDB.getInt("id") != 0){
+                    if(!videoContentEdit.getText().toString().trim().equals("")){
+                        Intent intent = new Intent();
+                        intent.putExtra("videoContentTitle", videoContentEdit.getText().toString());
+                        intent.putExtra("videoSampleId", videoSampleId);
+                        intent.setClass(VideoContentTitleActivity.this, ShareActivity.class);
+                        startActivity(intent);
+                    }else{
+                        Toast.makeText(VideoContentTitleActivity.this, "請輸入酷標語", Toast.LENGTH_SHORT).show();
+                    }
+                }else{
+                    Intent intent = new Intent();
+                    intent.setClass(VideoContentTitleActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                }
             }
         });
 
@@ -161,13 +175,13 @@ public class VideoContentTitleActivity extends BaseActivity {
         MediaSource videoSource;
         // test hls
         //url="http://hls.videocc.net/ce0812b122/c/ce0812b122c492470605bc47d3388a09_3.m3u8";
-        if(ApplicationParameter.FILE_SAVE_PATH.contains(".m3u8")){
+        if(ApplicationParameter.FINALLY_FILE_SAVE_PATH.contains(".m3u8")){
 //            videoSource =new HlsMediaSource(Uri.parse(url),dataSourceFactory,null,null);
-            videoSource = new ExtractorMediaSource(Uri.parse(ApplicationParameter.FILE_SAVE_PATH),
+            videoSource = new ExtractorMediaSource(Uri.parse(ApplicationParameter.FINALLY_FILE_SAVE_PATH),
                     dataSourceFactory, extractorsFactory, null, null);
         }else{
             //test mp4
-            videoSource = new ExtractorMediaSource(Uri.parse(ApplicationParameter.FILE_SAVE_PATH),
+            videoSource = new ExtractorMediaSource(Uri.parse(ApplicationParameter.FINALLY_FILE_SAVE_PATH),
                     dataSourceFactory, extractorsFactory, null, null);
         }
 
