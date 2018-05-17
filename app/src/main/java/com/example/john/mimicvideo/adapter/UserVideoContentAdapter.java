@@ -76,7 +76,7 @@ public class UserVideoContentAdapter extends RecyclerView.Adapter<UserVideoConte
                 intent.setClass(context, EditVideoContentActivity.class);
                 intent.putExtra("videoContent", videoContentList.get(position));
                 intent.putExtra("videoContentId", videoContentList.get(position).id);
-                context.startActivity(intent);
+                ((Activity)context).startActivityForResult(intent, 0);
             }
         });
 
