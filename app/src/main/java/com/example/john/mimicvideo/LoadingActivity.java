@@ -1,17 +1,12 @@
 package com.example.john.mimicvideo;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Environment;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -74,7 +69,7 @@ public class LoadingActivity extends BaseActivity {
             int videoSampleId = 0;
             String cameraVideoUrl = getIntent().getStringExtra("cameraVideoUrl");
             Intent intent = new Intent();
-            intent.setClass(LoadingActivity.this, TestVideoActivity.class);
+            intent.setClass(LoadingActivity.this, VideoPreviewActivity.class);
             intent.putExtra("videoSampleId", videoSampleId);
             intent.putExtra("videoUrl", cameraVideoUrl);
             startActivity(intent);
@@ -108,7 +103,7 @@ public class LoadingActivity extends BaseActivity {
                         // do anything after completion
                         Intent intent = new Intent();
                         if(to == ApplicationParameter.TO_RECORD){
-                            intent.setClass(LoadingActivity.this, TestVideoActivity.class);
+                            intent.setClass(LoadingActivity.this, VideoPreviewActivity.class);
                             intent.putExtra("videoSampleId", videoSampleId);
                         }else{
                             intent.setClass(LoadingActivity.this, ShareActivity.class);
