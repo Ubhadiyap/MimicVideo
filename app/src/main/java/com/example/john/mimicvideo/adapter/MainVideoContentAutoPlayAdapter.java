@@ -3,7 +3,6 @@ package com.example.john.mimicvideo.adapter;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -22,15 +21,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.john.mimicvideo.CameraActivity;
 import com.example.john.mimicvideo.CommentActivity;
 import com.example.john.mimicvideo.LoadingActivity;
 import com.example.john.mimicvideo.LoginActivity;
 import com.example.john.mimicvideo.OtherProfileActivity;
 import com.example.john.mimicvideo.R;
 import com.example.john.mimicvideo.SameVideoContentActivity;
-import com.example.john.mimicvideo.ShareActivity;
-import com.example.john.mimicvideo.TestVideoActivity;
 import com.example.john.mimicvideo.model.Like;
 import com.example.john.mimicvideo.model.VideoContent;
 import com.example.john.mimicvideo.utils.ApplicationParameter;
@@ -40,8 +36,6 @@ import com.example.john.mimicvideo.utils.SharePreferenceDB;
 import com.example.john.mimicvideo.view.AutoPlayVideo.AAH_CustomViewHolder;
 import com.example.john.mimicvideo.view.AutoPlayVideo.AAH_VideosAdapter;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
-
-import junit.framework.Test;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -172,6 +166,7 @@ public class MainVideoContentAutoPlayAdapter extends AAH_VideosAdapter {
                         Like like = new Like();
                         like.user_id = sharePreferenceDB.getInt("id");
                         like.video_content_id = mainVideoContentList.get(position).id;
+                        like.is_click = 1;
                         mainVideoContentList.get(position).likeList.add(like);
                         clickFavoriteIdArrayList.add(String.valueOf(mainVideoContentList.get(position).id));
                         sharePreferenceDB.putListString("clickFavoriteIdArrayList", clickFavoriteIdArrayList);
