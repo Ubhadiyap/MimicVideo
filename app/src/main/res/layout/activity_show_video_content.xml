@@ -31,8 +31,7 @@
                 android:id="@+id/ownerProfileImg"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:layout_centerHorizontal="false"
-                app:srcCompat="@drawable/apptheme_text_select_handle_right" />
+                android:layout_centerHorizontal="false" />
 
             <TextView
                 android:id="@+id/ownerNameTxt"
