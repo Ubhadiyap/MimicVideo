@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="200dp"
+    android:background="@color/white">
 
     <TextView
         android:id="@+id/textView3"
@@ -11,7 +13,8 @@
         android:layout_alignWithParentIfMissing="false"
         android:layout_centerHorizontal="true"
         android:layout_centerInParent="false"
-        android:text="要刪除你的娛樂嗎?" />
+        android:text="要刪除你的娛樂嗎?"
+        android:textColor="@android:color/black" />
 
     <RelativeLayout
         android:id="@+id/btnLayout"
@@ -22,23 +25,21 @@
         android:layout_marginTop="20dp"
         android:gravity="center">
 
-        <TextView
-            android:id="@+id/yesBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/layout_border_white_selector"
-            android:text="確認"
-            android:textColor="@color/com_facebook_blue" />
+        <ImageView
+            android:id="@+id/yesImg"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginRight="20dp"
+            app:srcCompat="@drawable/imageview_yes_style" />
 
-        <TextView
-            android:id="@+id/noBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:layout_toRightOf="@+id/yesBtn"
-            android:background="@drawable/layout_border_white_selector"
-            android:text="取消"
-            android:textColor="@color/com_facebook_blue" />
+        <ImageView
+            android:id="@+id/noImg"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginLeft="40dp"
+            android:layout_toRightOf="@+id/yesImg"
+            app:srcCompat="@drawable/imageview_delete_style" />
+
     </RelativeLayout>
 
 </RelativeLayout>
