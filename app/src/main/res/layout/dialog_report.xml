@@ -17,6 +17,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"
             android:text="TextView"
+            android:textColor="@android:color/black"
             android:textSize="@dimen/icon_text_size" />
 
         <TextView
@@ -25,7 +26,8 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="false"
             android:layout_centerInParent="true"
-            android:text="TextView" />
+            android:text="檢舉"
+            android:textColor="@android:color/black" />
     </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView
@@ -38,5 +40,11 @@
         android:id="@+id/reportSubmitBtn"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:text="通報" />
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="#bfbfbf"
+        android:enabled="false"
+        android:text="通報"
+        android:textColor="@android:color/white" />
 </LinearLayout>
