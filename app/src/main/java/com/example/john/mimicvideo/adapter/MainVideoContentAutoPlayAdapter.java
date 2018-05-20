@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.john.mimicvideo.CommentActivity;
@@ -213,12 +214,13 @@ public class MainVideoContentAutoPlayAdapter extends AAH_VideosAdapter {
                 TextView cancelTxt = dialog.findViewById(R.id.cancelTxt);
                 RecyclerView reportDescriptionRV = dialog.findViewById(R.id.reportDescriptionRV);
                 Button reportSubmitBtn = dialog.findViewById(R.id.reportSubmitBtn);
+                reportSubmitBtn.setEnabled(false);
 
                 cancelTxt.setTypeface(ApplicationService.getFont());
                 cancelTxt.setText(R.string.fa_times);
 
                 LinearLayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
-                ReportDescriptionAdapter reportDescriptionAdapter = new ReportDescriptionAdapter(context);
+                final ReportDescriptionAdapter reportDescriptionAdapter = new ReportDescriptionAdapter(context, reportSubmitBtn);
                 reportDescriptionRV.setLayoutManager(layoutManager);
                 reportDescriptionRV.setAdapter(reportDescriptionAdapter);
 
@@ -232,7 +234,8 @@ public class MainVideoContentAutoPlayAdapter extends AAH_VideosAdapter {
                 reportSubmitBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        new ReportSubmit("").execute();
+                        dialog.dismiss();
+                        new ReportSubmit(mainVideoContentList.get(position).id, reportDescriptionAdapter.getSelectedWord()).execute();
                     }
                 });
 
@@ -380,9 +383,11 @@ public class MainVideoContentAutoPlayAdapter extends AAH_VideosAdapter {
 
     //send the report description
     class ReportSubmit extends AsyncTask<String, String, String> {
+        int videoContentId;
         String reportDescription;
 
-        ReportSubmit(String reportDescription) {
+        ReportSubmit(int videoContentId, String reportDescription) {
+            this.videoContentId = videoContentId;
             this.reportDescription = reportDescription;
         }
 
@@ -403,8 +408,8 @@ public class MainVideoContentAutoPlayAdapter extends AAH_VideosAdapter {
 //            String description = inputDesc.getText().toString();
             // Building Parameters
             List<NameValuePair> params = new ArrayList<NameValuePair>();
-            params.add(new BasicNameValuePair("type", "0"));
-            params.add(new BasicNameValuePair("reportDescription", reportDescription));
+            params.add(new BasicNameValuePair("video_content_id", String.valueOf(videoContentId)));
+            params.add(new BasicNameValuePair("report_description", reportDescription));
 
 
             // getting JSON Object
@@ -441,6 +446,7 @@ public class MainVideoContentAutoPlayAdapter extends AAH_VideosAdapter {
          **/
         protected void onPostExecute(String file_url) {
             // dismiss the dialog once done
+            Toast.makeText(context, "謝謝通報", Toast.LENGTH_SHORT).show();
         }
 
     }
