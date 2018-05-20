@@ -1,13 +1,9 @@
 package com.example.john.mimicvideo.fragment;
 
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,36 +11,26 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONArrayRequestListener;
-import com.example.john.mimicvideo.CameraActivity;
-import com.example.john.mimicvideo.CommentActivity;
 import com.example.john.mimicvideo.LoginActivity;
 import com.example.john.mimicvideo.ProfileActivity;
 import com.example.john.mimicvideo.R;
 import com.example.john.mimicvideo.SearchActivity;
-import com.example.john.mimicvideo.ShowVideoContentActivity;
-import com.example.john.mimicvideo.TestVideoActivity;
 import com.example.john.mimicvideo.VideoSampleActivity;
 import com.example.john.mimicvideo.adapter.MainVideoContentAutoPlayAdapter;
 import com.example.john.mimicvideo.api.Api;
-import com.example.john.mimicvideo.model.Comment;
 import com.example.john.mimicvideo.model.Like;
 import com.example.john.mimicvideo.model.User;
 import com.example.john.mimicvideo.model.VideoContent;
-import com.example.john.mimicvideo.model.VideoSample;
 import com.example.john.mimicvideo.utils.ApplicationService;
 import com.example.john.mimicvideo.utils.JSONParser;
 import com.example.john.mimicvideo.utils.SharePreferenceDB;
 import com.example.john.mimicvideo.view.AutoPlayVideo.AAH_CustomRecyclerView;
-
-import junit.framework.Test;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
