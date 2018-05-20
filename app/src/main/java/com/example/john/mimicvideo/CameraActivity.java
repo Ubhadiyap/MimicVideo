@@ -272,9 +272,10 @@ public class CameraActivity extends BaseActivity {
                 dialog.setContentView(R.layout.dialog_report);
                 RecyclerView reportDescriptionRV = dialog.findViewById(R.id.reportDescriptionRV);
                 Button reportSubmitBtn = dialog.findViewById(R.id.reportSubmitBtn);
+                reportSubmitBtn.setEnabled(false);
 
                 LinearLayoutManager layoutManager = new LinearLayoutManager(CameraActivity.this, LinearLayoutManager.VERTICAL, false);
-                final ReportDescriptionAdapter reportDescriptionAdapter = new ReportDescriptionAdapter(CameraActivity.this);
+                final ReportDescriptionAdapter reportDescriptionAdapter = new ReportDescriptionAdapter(CameraActivity.this, reportSubmitBtn);
                 reportDescriptionRV.setLayoutManager(layoutManager);
                 reportDescriptionRV.setAdapter(reportDescriptionAdapter);
 
