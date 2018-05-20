@@ -27,6 +27,7 @@ import com.example.john.mimicvideo.api.Api;
 import com.example.john.mimicvideo.model.Like;
 import com.example.john.mimicvideo.model.User;
 import com.example.john.mimicvideo.model.VideoContent;
+import com.example.john.mimicvideo.utils.ApplicationParameter;
 import com.example.john.mimicvideo.utils.ApplicationService;
 import com.example.john.mimicvideo.utils.JSONParser;
 import com.example.john.mimicvideo.utils.SharePreferenceDB;
@@ -77,6 +78,14 @@ public class EditVideoContentActivity extends BaseActivity {
 
     private SharePreferenceDB sharePreferenceDB;
     private ArrayList<String>clickFavoriteIdArrayList = new ArrayList<>();
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent();
+        setResult(ApplicationParameter.BACK_PROFILE, intent);
+        finish();
+    }
+
     @Override
     public void onPause() {
         super.onPause();  // Always call the superclass method first
@@ -133,25 +142,34 @@ public class EditVideoContentActivity extends BaseActivity {
         backTxt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
+                backTxt.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent();
+                        setResult(ApplicationParameter.BACK_PROFILE, intent);
+                        finish();
+                    }
+                });
             }
         });
 
 
         deleteTxt.setTypeface(ApplicationService.getFont());
-        deleteTxt.setText(R.string.fa_times);
+        deleteTxt.setText(R.string.fa_trash);
         deleteTxt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 final Dialog dialog = new Dialog(EditVideoContentActivity.this, R.style.selectorDialog);
                 dialog.setContentView(R.layout.dialog_delete_video);
 
-                TextView yesBtn = dialog.findViewById(R.id.yesBtn);
-                yesBtn.setOnClickListener(new View.OnClickListener() {
+                ImageView yesImg = dialog.findViewById(R.id.yesImg);
+                yesImg.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         if(editVideoContent != null){
                             new DeleteVideoContent(editVideoContent.id).execute();
+                            Intent intent = new Intent();
+                            setResult(ApplicationParameter.BACK_PROFILE, intent);
                             finish();
                         }else{
                             Toast.makeText(EditVideoContentActivity.this, "發生錯誤", Toast.LENGTH_SHORT).show();
@@ -159,8 +177,8 @@ public class EditVideoContentActivity extends BaseActivity {
                     }
                 });
 
-                TextView noBtn = dialog.findViewById(R.id.noBtn);
-                noBtn.setOnClickListener(new View.OnClickListener() {
+                ImageView noImg = dialog.findViewById(R.id.noImg);
+                noImg.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         dialog.dismiss();
@@ -180,11 +198,15 @@ public class EditVideoContentActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 if(editVideoContent != null){
-                    new EditVideoContent(editVideoContent.id,  editTitleEdit.getText().toString()).execute();
-                    Intent intent = new Intent(EditVideoContentActivity.this, MainActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
+                    if(!editTitleEdit.getText().toString().trim().equals("")){
+                        new EditVideoContent(editVideoContent.id,  editTitleEdit.getText().toString()).execute();
+                        Intent intent = new Intent(EditVideoContentActivity.this, MainActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                    }else{
+                        Toast.makeText(EditVideoContentActivity.this, "請輸入酷標語", Toast.LENGTH_SHORT).show();
+                    }
                 }else{
                     Toast.makeText(EditVideoContentActivity.this, "發生錯誤", Toast.LENGTH_SHORT).show();
                 }
@@ -298,6 +320,7 @@ public class EditVideoContentActivity extends BaseActivity {
 
         player.prepare(videoSource);
         player.setPlayWhenReady(true);
+        player.setRepeatMode(1);
     }
 
 
@@ -553,6 +576,7 @@ public class EditVideoContentActivity extends BaseActivity {
 
             commentAmountTxt.setText(String.valueOf(editVideoContent.commentAmount));
             likeAmountTxt.setText(String.valueOf(editVideoContent.likeList.size()));
+            editTitleEdit.setText(editVideoContent.title);
 
 
             for(int i = 0; i < editVideoContent.likeList.size(); i++){
