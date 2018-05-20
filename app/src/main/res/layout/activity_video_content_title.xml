@@ -29,6 +29,7 @@
             android:layout_marginTop="20dp"
             android:layout_weight="1"
             android:text="0"
+            android:textColor="@color/white"
             android:textSize="@dimen/icon_text_size" />
 
     </RelativeLayout>
@@ -36,7 +37,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="3"
+        android:layout_weight="5"
         android:gravity="center"
         android:orientation="horizontal">
 
@@ -45,23 +46,28 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:visibility="gone"
             app:srcCompat="@drawable/com_facebook_button_icon_blue" />
 
         <EditText
             android:id="@+id/videoContentEdit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="20dp"
             android:layout_weight="1"
+            android:background="@drawable/layout_border_video_content_title_editview"
             android:ems="10"
             android:inputType="textPersonName"
-            android:maxLength="20" />
+            android:maxLength="20"
+            android:padding="10dp" />
 
         <ImageView
             android:id="@+id/toShareImg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            app:srcCompat="@drawable/com_facebook_close" />
+            android:layout_width="@dimen/icon_img_size"
+            android:layout_height="@dimen/icon_img_size"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="20dp"
+            app:srcCompat="@drawable/send_black" />
 
     </LinearLayout>
 
