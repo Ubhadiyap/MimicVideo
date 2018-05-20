@@ -52,7 +52,11 @@ import com.github.hiteshsondhi88.libffmpeg.exceptions.FFmpegNotSupportedExceptio
 import com.jacksonandroidnetworking.JacksonParserFactory;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -1386,9 +1390,17 @@ public class VideoPreviewActivity extends BaseActivity implements OnTrimVideoLis
         }else{
             switch(recordAudioList.size()){
                 case 0:{
-                    Intent intent = new Intent();
-                    intent.setClass(VideoPreviewActivity.this, VideoContentTitleActivity.class);
-                    startActivity(intent);
+                    File file = new File(originalFileName);
+                    File newFile = new File(ApplicationParameter.FINALLY_FILE_SAVE_PATH);
+                    try{
+                        copy(file, newFile);
+                        Intent intent = new Intent();
+                        intent.setClass(VideoPreviewActivity.this, VideoContentTitleActivity.class);
+                        startActivity(intent);
+                        closeLoadDialog();
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
                     break;
                 }
                 case 1:{
@@ -1665,6 +1677,25 @@ public class VideoPreviewActivity extends BaseActivity implements OnTrimVideoLis
         firstAudioPlay = false;
         secondAudioPlay = false;
         thirdAudioPlay = false;
+    }
+
+    private void copy(File src, File dst) throws IOException {
+        InputStream in = new FileInputStream(src);
+        try {
+            OutputStream out = new FileOutputStream(dst);
+            try {
+                // Transfer bytes from in to out
+                byte[] buf = new byte[1024];
+                int len;
+                while ((len = in.read(buf)) > 0) {
+                    out.write(buf, 0, len);
+                }
+            } finally {
+                out.close();
+            }
+        } finally {
+            in.close();
+        }
     }
 
 
