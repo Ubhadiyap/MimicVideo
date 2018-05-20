@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/MimicVideo.iml" filepath="$PROJECT_DIR$/MimicVideo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/WeiXinRecorded/WeiXinRecorded.iml" filepath="$PROJECT_DIR$/WeiXinRecorded/WeiXinRecorded.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
