@@ -116,19 +116,27 @@
         <EditText
             android:id="@+id/editTitleEdit"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_alignParentBottom="false"
             android:layout_centerHorizontal="true"
+            android:layout_centerVertical="false"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/layout_border_video_content_title_editview"
             android:inputType="textPersonName"
-            android:maxLength="20" />
+            android:maxLength="20"
+            android:padding="10dp" />
 
         <Button
             android:id="@+id/saveBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="false"
-            android:layout_centerHorizontal="false"
-            android:layout_toRightOf="@+id/editTitleEdit"
-            android:text="確認" />
+            android:layout_below="@+id/editTitleEdit"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:background="@color/blue"
+            android:text="確認"
+            android:textColor="@color/white" />
     </RelativeLayout>
 </LinearLayout>
