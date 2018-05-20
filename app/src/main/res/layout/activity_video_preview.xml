@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.john.mimicvideo.VideoPreviewActivity">
+
+    <RelativeLayout
+        android:id="@+id/layout_surface_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/layout"
+        android:layout_weight="2"
+        android:background="@android:color/black"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <VideoView
+            android:id="@+id/video_loader"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true" />
+
+        <ImageView
+            android:id="@+id/icon_video_play"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/play_button" />
+
+        <TextView
+            android:id="@+id/backTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:text="TextView"
+            android:textColor="@color/white"
+            android:textSize="@dimen/icon_text_size" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/background_video_color">
+
+        <SeekBar
+            android:id="@+id/handlerTop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:max="1000"
+            android:paddingTop="5dp"
+            android:progressDrawable="@android:color/transparent"
+            android:secondaryProgress="0"
+            android:thumb="@drawable/down_arrow" />
+
+        <com.example.john.mimicvideo.view.VideoTrimmer.view.ProgressBarView
+            android:id="@+id/timeVideoView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/handlerTop"
+            android:visibility="gone" />
+
+        <com.example.john.mimicvideo.view.VideoTrimmer.view.TimeLineView
+            android:id="@+id/timeLineView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/handlerTop" />
+
+        <com.example.john.mimicvideo.view.VideoTrimmer.view.RangeSeekBarView
+            android:id="@+id/timeLineBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/timeLineView"
+            android:visibility="gone" />
+
+        <View
+            android:id="@+id/lineTop"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/timeLineBar"
+            android:background="@color/line_button" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <Button
+                android:id="@+id/btCancel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/black_button_background"
+                android:text="@string/cancel"
+                android:textColor="@android:color/white" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/line_button" />
+
+            <Button
+                android:id="@+id/btSave"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/black_button_background"
+                android:text="@string/save"
+                android:textColor="@android:color/white" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/timeText"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:background="@color/background_video_color">
+
+        <TextView
+            android:id="@+id/textSize"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:id="@+id/textTimeSelection"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/textSize"
+            android:layout_toLeftOf="@+id/textTime"
+            android:layout_toRightOf="@+id/textSize"
+            android:layout_toStartOf="@+id/textTime"
+            android:gravity="center"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:id="@+id/textTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="false"
+            android:layout_alignParentRight="false"
+            android:layout_centerHorizontal="true"
+            android:layout_centerInParent="false"
+            android:layout_centerVertical="false"
+            android:textColor="@android:color/white" />
+
+        <RelativeLayout
+            android:id="@+id/recordLineLayout1"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_below="@+id/textTimeSelection"
+            android:layout_marginTop="5dp">
+
+            <LinearLayout
+                android:id="@+id/lineLayout1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"></LinearLayout>
+
+            <TextView
+                android:id="@+id/deleteLineTxt1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="5dp"
+                android:text="TextView"
+                android:textColor="@android:color/white"
+                android:textSize="20sp"
+                android:visibility="gone" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/recordLineLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_below="@+id/recordLineLayout1"
+            android:layout_marginTop="10dp"
+            android:layout_weight="2">
+
+            <LinearLayout
+                android:id="@+id/lineLayout2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal"></LinearLayout>
+
+            <TextView
+                android:id="@+id/deleteLineTxt2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                android:text="TextView"
+                android:textColor="@android:color/white"
+                android:textSize="20sp"
+                android:visibility="gone" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/recordLineLayout3"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_below="@+id/recordLineLayout2"
+            android:layout_marginTop="10dp"
+            android:layout_weight="2">
+
+            <LinearLayout
+                android:id="@+id/lineLayout3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal"></LinearLayout>
+
+            <TextView
+                android:id="@+id/deleteLineTxt3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                android:text="TextView"
+                android:textColor="@android:color/white"
+                android:textSize="20sp"
+                android:visibility="gone" />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="@color/background_video_color">
+
+        <ImageView
+            android:id="@+id/nextImg"
+            android:layout_width="@dimen/icon_img_size"
+            android:layout_height="@dimen/icon_img_size"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="20dp"
+            android:layout_marginRight="20dp"
+            app:srcCompat="@drawable/send" />
+
+        <ImageView
+            android:id="@+id/muteVideoImg"
+            android:layout_width="@dimen/icon_img_size"
+            android:layout_height="@dimen/icon_img_size"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="false"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="20dp"
+            app:srcCompat="@drawable/speaker" />
+
+        <ImageView
+            android:id="@+id/cutVideoImg"
+            android:layout_width="@dimen/icon_img_size"
+            android:layout_height="@dimen/icon_img_size"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:visibility="gone"
+            app:srcCompat="@drawable/apptheme_text_select_handle_right" />
+
+        <ImageView
+            android:id="@+id/recordImg"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentTop="false"
+            android:layout_centerHorizontal="false"
+            android:layout_centerInParent="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/layout_border_audio_recorder"
+            android:padding="10dp"
+            app:srcCompat="@drawable/recorder" />
+
+
+    </RelativeLayout>
+
+</LinearLayout>
