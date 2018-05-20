@@ -10,7 +10,8 @@
     <RelativeLayout
         android:id="@+id/actionBarLayout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/actionbar_height">
+        android:layout_height="@dimen/actionbar_height"
+        android:background="@drawable/layout_shadow">
 
         <TextView
             android:id="@+id/backTxt"
@@ -41,16 +42,24 @@
     <LinearLayout
         android:id="@+id/createCommentLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="false"
+        android:layout_centerInParent="false"
+        android:layout_centerVertical="false"
+        android:background="@drawable/layout_border"
         android:orientation="horizontal">
 
         <EditText
             android:id="@+id/createCommentEdit"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
             android:layout_weight="1"
+            android:background="@null"
             android:ems="10"
+            android:hint="說一波"
             android:inputType="textPersonName" />
 
         <ImageView
@@ -58,6 +67,6 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            app:srcCompat="@drawable/com_facebook_button_icon_blue" />
+            app:srcCompat="@drawable/mouth" />
     </LinearLayout>
 </RelativeLayout>
