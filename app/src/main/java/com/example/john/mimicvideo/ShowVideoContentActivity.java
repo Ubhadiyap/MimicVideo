@@ -1,27 +1,27 @@
 package com.example.john.mimicvideo;
 
-import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.VideoView;
 
 import com.bumptech.glide.Glide;
+import com.example.john.mimicvideo.adapter.ReportDescriptionAdapter;
 import com.example.john.mimicvideo.api.Api;
 import com.example.john.mimicvideo.model.Like;
 import com.example.john.mimicvideo.model.User;
@@ -157,7 +157,7 @@ public class ShowVideoContentActivity extends BaseActivity {
             public void onClick(View view) {
                 if(editVideoContent != null){
                     Intent intent = new Intent();
-                    intent.setClass(ShowVideoContentActivity.this, TestVideoActivity.class);
+                    intent.setClass(ShowVideoContentActivity.this, VideoPreviewActivity.class);
                     intent.putExtra("videoContentUrl", editVideoContent.url);
                     startActivity(intent);
                 }else{
@@ -267,7 +267,42 @@ public class ShowVideoContentActivity extends BaseActivity {
         reportTxt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                final Dialog dialog = new Dialog(ShowVideoContentActivity.this, R.style.selectorDialog);
+                dialog.setContentView(R.layout.dialog_report);
+                TextView cancelTxt = dialog.findViewById(R.id.cancelTxt);
+                RecyclerView reportDescriptionRV = dialog.findViewById(R.id.reportDescriptionRV);
+                Button reportSubmitBtn = dialog.findViewById(R.id.reportSubmitBtn);
+                reportSubmitBtn.setEnabled(false);
 
+                cancelTxt.setTypeface(ApplicationService.getFont());
+                cancelTxt.setText(R.string.fa_times);
+
+                LinearLayoutManager layoutManager = new LinearLayoutManager(ShowVideoContentActivity.this, LinearLayoutManager.VERTICAL, false);
+                final ReportDescriptionAdapter reportDescriptionAdapter = new ReportDescriptionAdapter(ShowVideoContentActivity.this, reportSubmitBtn);
+                reportDescriptionRV.setLayoutManager(layoutManager);
+                reportDescriptionRV.setAdapter(reportDescriptionAdapter);
+
+                cancelTxt.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.dismiss();
+                    }
+                });
+
+                reportSubmitBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.dismiss();
+                        new ReportSubmit(editVideoContent.id, reportDescriptionAdapter.getSelectedWord()).execute();
+                    }
+                });
+
+
+                // 由程式設定 Dialog 視窗外的明暗程度, 亮度從 0f 到 1f
+                WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
+                lp.dimAmount = 0.5f;
+                dialog.getWindow().setAttributes(lp);
+                dialog.show();
             }
         });
 
@@ -395,9 +430,11 @@ public class ShowVideoContentActivity extends BaseActivity {
 
     //send the report description
     class ReportSubmit extends AsyncTask<String, String, String> {
+        int videoContentId;
         String reportDescription;
 
-        ReportSubmit(String reportDescription) {
+        ReportSubmit(int videoContentId, String reportDescription) {
+            this.videoContentId = videoContentId;
             this.reportDescription = reportDescription;
         }
 
@@ -418,8 +455,8 @@ public class ShowVideoContentActivity extends BaseActivity {
 //            String description = inputDesc.getText().toString();
             // Building Parameters
             List<NameValuePair> params = new ArrayList<NameValuePair>();
-            params.add(new BasicNameValuePair("type", "0"));
-            params.add(new BasicNameValuePair("reportDescription", reportDescription));
+            params.add(new BasicNameValuePair("video_content_id", String.valueOf(videoContentId)));
+            params.add(new BasicNameValuePair("report_description", reportDescription));
 
 
             // getting JSON Object
@@ -456,6 +493,7 @@ public class ShowVideoContentActivity extends BaseActivity {
          **/
         protected void onPostExecute(String file_url) {
             // dismiss the dialog once done
+            Toast.makeText(ShowVideoContentActivity.this, "謝謝通報", Toast.LENGTH_SHORT).show();
         }
 
     }
