@@ -13,14 +13,14 @@
         android:layout_above="@+id/logoNameTxt"
         android:layout_centerInParent="true"
         android:layout_marginBottom="10dp"
-        app:srcCompat="@drawable/com_facebook_button_icon_blue" />
+        app:srcCompat="@drawable/dolphin" />
 
     <TextView
         android:id="@+id/logoNameTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:text="拍鏘"
+        android:text="狂說"
         android:textSize="30sp" />
 
     <TextView
