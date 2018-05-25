@@ -127,8 +127,10 @@ public class RecorderClient {
      * @param releaseTexture true if you won`t reuse this surfaceTexture later
      */
     public void stopPreview(boolean releaseTexture) {
-        videoClient.stopPreview(releaseTexture);
-        Log.d("","RecorderClient,stopPreview()");
+        if(videoClient != null){
+            videoClient.stopPreview(releaseTexture);
+            Log.d("","RecorderClient,stopPreview()");
+        }
     }
 
     /**
