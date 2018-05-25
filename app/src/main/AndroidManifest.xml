@@ -85,7 +85,7 @@
         <activity android:name=".LoadingActivity" />
         <activity android:name=".FantasticCameraActivity" />
         <activity android:name=".ContinueCameraActivity" />
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".MainActivity"/>
     </application>
 
 </manifest>
