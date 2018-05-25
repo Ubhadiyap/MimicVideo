@@ -408,7 +408,11 @@ public class ContinueCameraActivity extends BaseActivity implements
     private ArrayList<Long> durationList;
 
     private void mergeFile() {
-        finishRecording(mSaveVideoPath);
+        if(totalTime > 2000){
+            finishRecording(mSaveVideoPath);
+        }else{
+            Toast.makeText(ContinueCameraActivity.this, "錄製影片太短", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void finishRecording(String filePath) {
