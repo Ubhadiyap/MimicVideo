@@ -422,6 +422,7 @@ public class ContinueCameraActivity extends BaseActivity implements
             //Toast.makeText(getApplicationContext(), "视频文件已保存至"+ mSaveVideoPath, Toast.LENGTH_SHORT).show();
             mp4List.clear();
             durationList.clear();
+            rb_start.cleanSplit();
             Intent intent = new Intent();
             intent.setClass(ContinueCameraActivity.this, VideoPreviewActivity.class);
             startActivity(intent);
@@ -443,8 +444,9 @@ public class ContinueCameraActivity extends BaseActivity implements
 //                    Toast.makeText(getApplicationContext(), "视频文件保存失败!!!", Toast.LENGTH_SHORT).show();
 //                }
                 //below delete record
-//                mp4List.clear();
-//                durationList.clear();
+               mp4List.clear();
+               durationList.clear();
+                rb_start.cleanSplit();
                 Intent intent = new Intent();
                 intent.setClass(ContinueCameraActivity.this, VideoPreviewActivity.class);
                 startActivity(intent);

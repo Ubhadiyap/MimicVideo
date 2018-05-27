@@ -9,7 +9,7 @@
         android:id="@+id/backTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
         android:text="0"
         android:textColor="@android:color/black"
@@ -57,7 +57,7 @@
 
             <TextView
                 android:id="@+id/myVideoContentTabTxt"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@drawable/layout_border"
@@ -69,9 +69,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:background="@drawable/layout_border"
                 android:gravity="center"
-                android:text="享受"
-                android:visibility="gone" />
+                android:text="享受" />
         </LinearLayout>
 
         <android.support.v7.widget.RecyclerView

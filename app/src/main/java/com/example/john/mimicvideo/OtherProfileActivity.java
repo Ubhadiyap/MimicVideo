@@ -1,21 +1,19 @@
 package com.example.john.mimicvideo;
 
 import android.content.Intent;
-import android.media.MediaMetadataRetriever;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.john.mimicvideo.adapter.OtherUserVideoContentAdapter;
-import com.example.john.mimicvideo.adapter.UserVideoContentAdapter;
 import com.example.john.mimicvideo.api.Api;
 import com.example.john.mimicvideo.model.Like;
 import com.example.john.mimicvideo.model.User;
@@ -32,13 +30,13 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class OtherProfileActivity extends BaseActivity {
     ImageView profileImg;
     TextView nameTxt;
     TextView backTxt;
+    Button subscribeBtn;
     RecyclerView userVideoContentRV;
     JSONParser jsonParser = new JSONParser();
 
@@ -51,6 +49,8 @@ public class OtherProfileActivity extends BaseActivity {
     int id;
     String name;
     String profile;
+    //暫時給訂閱按鈕用
+    int flag = 0;
 
     @Override
     public void onBackPressed() {
@@ -66,6 +66,7 @@ public class OtherProfileActivity extends BaseActivity {
         profileImg = findViewById(R.id.profileImg);
         nameTxt = findViewById(R.id.nameTxt);
         backTxt = findViewById(R.id.backTxt);
+        subscribeBtn = findViewById(R.id.subscribebtn);
         userVideoContentRV = findViewById(R.id.userVideoContentRV);
 
         backTxt.setTypeface(ApplicationService.getFont());
@@ -86,6 +87,25 @@ public class OtherProfileActivity extends BaseActivity {
         userVideoContentRV.setLayoutManager(layoutManager);
         userVideoContentRV.addItemDecoration(new SearchItemDecoration(OtherProfileActivity.this, 0));
         userVideoContentRV.setAdapter(userVideoContentAdapter);
+
+        subscribeBtn.setOnClickListener( new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                switch(flag) {
+                    case 0:
+                        subscribeBtn.setActivated(true);
+                        subscribeBtn.setText("已訂閱");
+                        flag = 1;
+                        break;
+                    case 1:
+                        subscribeBtn.setActivated(false);
+                        subscribeBtn.setText("訂閱");
+                        flag = 0;
+                        break;
+                }
+            }
+        });
 
         userVideoContentRV.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
