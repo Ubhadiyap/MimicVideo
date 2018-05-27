@@ -19,8 +19,8 @@ import android.widget.TextView;
 import android.widget.VideoView;
 
 import com.bumptech.glide.Glide;
-import com.example.john.mimicvideo.CameraActivity;
 import com.example.john.mimicvideo.CommentActivity;
+import com.example.john.mimicvideo.FantasticCameraActivity;
 import com.example.john.mimicvideo.LoginActivity;
 import com.example.john.mimicvideo.OtherProfileActivity;
 import com.example.john.mimicvideo.R;
@@ -148,7 +148,7 @@ public class SameVideoContentAutoPlayAdapter extends AAH_VideosAdapter {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent();
-                    intent.setClass(context, CameraActivity.class);
+                    intent.setClass(context, FantasticCameraActivity.class);
                     intent.putExtra("videoContentUrl", videoContent.url);
                     context.startActivity(intent);
                 }
