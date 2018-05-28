@@ -19,7 +19,7 @@
     <application
         android:name=".utils.ApplicationService"
         android:allowBackup="true"
-        android:icon="@mipmap/dolphin_white"
+        android:icon="@mipmap/crazy_talk_logo"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
@@ -76,7 +76,6 @@
             android:screenOrientation="portrait" />
         <activity android:name=".VideoSampleActivity" />
         <activity android:name=".ShowVideoContentActivity" />
-        <activity android:name=".CameraActivity" />
         <activity android:name=".ShareActivity" />
         <activity android:name=".VideoContentTitleActivity" />
         <activity android:name=".EditVideoContentActivity" />
