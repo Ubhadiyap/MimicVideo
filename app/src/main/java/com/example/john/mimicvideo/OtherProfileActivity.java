@@ -16,7 +16,6 @@ import com.bumptech.glide.Glide;
 import com.example.john.mimicvideo.adapter.OtherUserVideoContentAdapter;
 import com.example.john.mimicvideo.api.Api;
 import com.example.john.mimicvideo.model.Like;
-import com.example.john.mimicvideo.model.Subscription;
 import com.example.john.mimicvideo.model.User;
 import com.example.john.mimicvideo.model.VideoContent;
 import com.example.john.mimicvideo.utils.ApplicationParameter;
