@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide;
 import com.example.john.mimicvideo.adapter.OtherUserVideoContentAdapter;
 import com.example.john.mimicvideo.api.Api;
 import com.example.john.mimicvideo.model.Like;
+import com.example.john.mimicvideo.model.Subscription;
 import com.example.john.mimicvideo.model.User;
 import com.example.john.mimicvideo.model.VideoContent;
 import com.example.john.mimicvideo.utils.ApplicationParameter;
@@ -23,6 +24,7 @@ import com.example.john.mimicvideo.utils.ApplicationService;
 import com.example.john.mimicvideo.utils.GridLayoutManagerWithSmoothScroller;
 import com.example.john.mimicvideo.utils.JSONParser;
 import com.example.john.mimicvideo.utils.SearchItemDecoration;
+import com.example.john.mimicvideo.utils.SharePreferenceDB;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -49,7 +51,7 @@ public class OtherProfileActivity extends BaseActivity {
     int id;
     String name;
     String profile;
-    //暫時給訂閱按鈕用
+    //for subscribe btn
     int flag = 0;
 
     @Override
@@ -97,6 +99,7 @@ public class OtherProfileActivity extends BaseActivity {
                         subscribeBtn.setActivated(true);
                         subscribeBtn.setText("已訂閱");
                         flag = 1;
+
                         break;
                     case 1:
                         subscribeBtn.setActivated(false);
@@ -217,6 +220,68 @@ public class OtherProfileActivity extends BaseActivity {
          * **/
         protected void onPostExecute(String file_url) {
             userVideoContentAdapter.setVideoContentList(userVideoContentList);
+        }
+
+    }
+
+
+    class Subscribe extends AsyncTask<String, String, JSONObject> {
+        int owner_id;
+        int follower_id;
+
+
+        Subscribe(int owner_id, int follower_id){
+            this.owner_id = owner_id;
+            this.follower_id = follower_id;
+        }
+
+        /**
+         * Before starting background thread Show Progress Dialog
+         * */
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        /**
+         * Creating product
+         * */
+        protected JSONObject doInBackground(String... args) {
+
+            // Building Parameters
+            List<NameValuePair> params = new ArrayList<NameValuePair>();
+            params.add(new BasicNameValuePair("owner_id", String.valueOf(owner_id)));
+            params.add(new BasicNameValuePair("follower_id", String.valueOf(follower_id)));
+
+
+            // getting JSON Object
+            // Note that create product url accepts POST method
+            //php名待改
+            JSONObject jsonObject = jsonParser.makeHttpRequest(Api.baseUrl + "subsrcibe.php",
+                    "POST", params);
+
+            if(jsonObject != null){
+                // check log cat fro response
+                Log.d("Create Response", jsonObject.toString());
+                return jsonObject;
+            }else{
+                return null;
+            }
+        }
+
+        /**
+         * After completing background task Dismiss the progress dialog
+         * **/
+        protected void onPostExecute(JSONObject jsonObject) {
+            if(jsonObject != null){
+                if(jsonObject.optInt("success") == 1){
+
+                }else{
+
+                }
+            }else {
+
+            }
         }
 
     }
