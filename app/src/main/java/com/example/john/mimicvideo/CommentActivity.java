@@ -42,7 +42,7 @@ public class CommentActivity extends BaseActivity {
     private int video_content_id;
     private int user_id;
     private int comment_amount = 100;
-    private SharePreferenceDB sharePreferenceDB;
+    //private SharePreferenceDB sharePreferenceDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,10 +52,10 @@ public class CommentActivity extends BaseActivity {
         createCommentEdit = findViewById(R.id.createCommentEdit);
         createCommentImg = findViewById(R.id.createCommentImg);
         backTxt = findViewById(R.id.backTxt);
-        sharePreferenceDB = new SharePreferenceDB(this);
+        //sharePreferenceDB = new SharePreferenceDB(this);
 
         video_content_id = getIntent().getIntExtra("video_content_id", 0);
-        user_id = sharePreferenceDB.getInt("id");
+        user_id = SharePreferenceDB.getInstance(CommentActivity.this).getInt("id");
 
         backTxt.setTypeface(ApplicationService.getFont());
         backTxt.setText(getString(R.string.fa_angle_left));
@@ -216,9 +216,9 @@ public class CommentActivity extends BaseActivity {
                 if(jsonObject.optInt("success") == 1){
                     Comment comment = new Comment();
                     User user = new User();
-                    user.id = sharePreferenceDB.getInt("id");
-                    user.name = sharePreferenceDB.getString("name");
-                    user.profile = sharePreferenceDB.getString("profile");
+                    user.id = SharePreferenceDB.getInstance(CommentActivity.this).getInt("id");
+                    user.name = SharePreferenceDB.getInstance(CommentActivity.this).getString("name");
+                    user.profile = SharePreferenceDB.getInstance(CommentActivity.this).getString("profile");
                     comment.content = content;
                     comment.owner = user;
                     commentAdapter.addNewComment(comment);

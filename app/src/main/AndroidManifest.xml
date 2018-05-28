@@ -83,7 +83,6 @@
         <activity android:name=".OtherProfileActivity" />
         <activity android:name=".VideoPreviewActivity" />
         <activity android:name=".LoadingActivity" />
-        <activity android:name=".FantasticCameraActivity" />
         <activity android:name=".ContinueCameraActivity" />
         <activity android:name=".MainActivity"></activity>
     </application>

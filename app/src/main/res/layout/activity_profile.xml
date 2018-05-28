@@ -60,7 +60,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/layout_border"
+                android:background="#888888"
                 android:gravity="center"
                 android:text="我的娛樂" />
 
@@ -69,16 +69,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/layout_border"
+                android:background="#DDDDDD"
                 android:gravity="center"
                 android:text="享受" />
         </LinearLayout>
-
         <android.support.v7.widget.RecyclerView
             android:id="@+id/userVideoContentRV"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/nameTxt" />
-    </LinearLayout>
+            android:layout_height="match_parent" />
+        </LinearLayout>
 
 </RelativeLayout>
