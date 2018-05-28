@@ -425,7 +425,6 @@ public class ContinueCameraActivity extends BaseActivity implements
             new File(mp4List.get(0)).renameTo(new File(mSaveVideoPath));
             //Toast.makeText(getApplicationContext(), "视频文件已保存至"+ mSaveVideoPath, Toast.LENGTH_SHORT).show();
             resetCamera();
-
             Intent intent = new Intent();
             intent.setClass(ContinueCameraActivity.this, VideoPreviewActivity.class);
             startActivity(intent);
@@ -448,7 +447,6 @@ public class ContinueCameraActivity extends BaseActivity implements
 //                }
                 //below delete record
                 resetCamera();
-
                 Intent intent = new Intent();
                 intent.setClass(ContinueCameraActivity.this, VideoPreviewActivity.class);
                 startActivity(intent);

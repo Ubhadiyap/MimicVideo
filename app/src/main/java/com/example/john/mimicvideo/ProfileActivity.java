@@ -3,6 +3,7 @@ package com.example.john.mimicvideo;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.media.MediaMetadataRetriever;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -34,7 +35,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class ProfileActivity extends BaseActivity {
@@ -47,8 +47,9 @@ public class ProfileActivity extends BaseActivity {
     TextView myVideoLikeTabTxt;
 
     JSONParser jsonParser = new JSONParser();
-    private SharePreferenceDB sharePreferenceDB;
+    //private SharePreferenceDB sharePreferenceDB;
     private List<VideoContent>userVideoContentList = new ArrayList<>();
+    private List<VideoContent>subscribeVideoContentList = new ArrayList<>();
     private UserVideoContentAdapter userVideoContentAdapter;
     private int video_content_amount = 20;
     private int like_video_content_amount = 20;
@@ -70,23 +71,24 @@ public class ProfileActivity extends BaseActivity {
         myVideoContentTabTxt = findViewById(R.id.myVideoContentTabTxt);
         myVideoLikeTabTxt = findViewById(R.id.myLikeTabTxt);
         settingImg = findViewById(R.id.settingImg);
-        final SharePreferenceDB sharePreferenceDB = new SharePreferenceDB(this);
+        //final SharePreferenceDB sharePreferenceDB = new SharePreferenceDB(this);
         loginManager = LoginManager.getInstance();
 
 
-        nameTxt.setText(sharePreferenceDB.getString("name"));
+        nameTxt.setText(SharePreferenceDB.getInstance(ProfileActivity.this).getString("name"));
 
         Glide.with(this)
-                .load(sharePreferenceDB.getString("profile"))
+                .load(SharePreferenceDB.getInstance(ProfileActivity.this).getString("profile"))
                 .into(profileImg);
 
-        GridLayoutManagerWithSmoothScroller layoutManager = new GridLayoutManagerWithSmoothScroller(ProfileActivity.this, 2);
+        final GridLayoutManagerWithSmoothScroller layoutManager = new GridLayoutManagerWithSmoothScroller(ProfileActivity.this, 2);
         layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
                 return 1;
             }
         });
+
         userVideoContentAdapter = new UserVideoContentAdapter(ProfileActivity.this, userVideoContentList);
         userVideoContentRV.setLayoutManager(layoutManager);
         userVideoContentRV.addItemDecoration(new SearchItemDecoration(ProfileActivity.this, 0));
@@ -101,8 +103,30 @@ public class ProfileActivity extends BaseActivity {
 
                     is_loading = true;
                     video_content_amount = video_content_amount + 100;
-                    new GetUserVideoContent(video_content_amount, sharePreferenceDB.getInt("id")).execute();
+                    new GetUserVideoContent(video_content_amount, SharePreferenceDB.getInstance(ProfileActivity.this).getInt("id")).execute();
                 }
+            }
+        });
+
+        myVideoContentTabTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                myVideoContentTabTxt.setBackgroundColor(Color.parseColor("#888888"));
+                myVideoLikeTabTxt.setBackgroundColor(Color.parseColor("#DDDDDD"));
+
+
+            }
+        });
+        myVideoLikeTabTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                myVideoLikeTabTxt.setBackgroundColor(Color.parseColor("#888888"));
+                myVideoContentTabTxt.setBackgroundColor(Color.parseColor("#DDDDDD"));
+                //userVideoContentRV.setAdapter(userVideoContentAdapter);
+                userVideoContentAdapter = new UserVideoContentAdapter(ProfileActivity.this, subscribeVideoContentList);
+                userVideoContentRV.setLayoutManager(layoutManager);
+                userVideoContentRV.addItemDecoration(new SearchItemDecoration(ProfileActivity.this, 0));
+                userVideoContentRV.setAdapter(userVideoContentAdapter);
             }
         });
 
@@ -137,7 +161,7 @@ public class ProfileActivity extends BaseActivity {
                     @Override
                     public void onClick(View view) {
                         dialog.dismiss();
-                        sharePreferenceDB.clear();
+                        SharePreferenceDB.getInstance(ProfileActivity.this).clear();
                         loginManager.logOut();
                         Intent intent = new Intent(ProfileActivity.this, MainActivity.class);;
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -156,15 +180,14 @@ public class ProfileActivity extends BaseActivity {
         });
 
 
-        new GetUserVideoContent(video_content_amount, sharePreferenceDB.getInt("id")).execute();
-        new GetUserLikeVideoContent(like_video_content_amount, sharePreferenceDB.getInt("id")).execute();
+        new GetUserVideoContent(video_content_amount, SharePreferenceDB.getInstance(ProfileActivity.this).getInt("id")).execute();
+        new GetUserLikeVideoContent(like_video_content_amount, SharePreferenceDB.getInstance(ProfileActivity.this).getInt("id")).execute();
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        SharePreferenceDB sharePreferenceDB = new SharePreferenceDB(this);
-        new GetUserVideoContent(video_content_amount, sharePreferenceDB.getInt("id")).execute();
+        new GetUserVideoContent(video_content_amount, SharePreferenceDB.getInstance(ProfileActivity.this).getInt("id")).execute();
     }
 
     class GetUserVideoContent extends AsyncTask<String, String, String> {
@@ -289,7 +312,7 @@ public class ProfileActivity extends BaseActivity {
                 Log.d("Create Response", videoContentJSONArray.toString());
 
                 try{
-                    userVideoContentList.clear();
+                    subscribeVideoContentList.clear();
 
                     for(int i = 0; i < videoContentJSONArray.length(); i++){
                         VideoContent videoContent = new VideoContent();
@@ -315,7 +338,7 @@ public class ProfileActivity extends BaseActivity {
                         videoContent.commentAmount = commentJsonArray.length();
                         videoContent.title = videoContentJSONArray.optJSONObject(i).optString("title");
                         videoContent.url =  Api.baseUrl + "video_content/" + videoContentJSONArray.optJSONObject(i).optString("path");
-                        userVideoContentList.add(videoContent);
+                        subscribeVideoContentList.add(videoContent);
                     }
                 }catch (Exception e){
                     e.printStackTrace();
@@ -330,7 +353,7 @@ public class ProfileActivity extends BaseActivity {
          * After completing background task Dismiss the progress dialog
          * **/
         protected void onPostExecute(String file_url) {
-            userVideoContentAdapter.setVideoContentList(userVideoContentList);
+            userVideoContentAdapter.setVideoContentList(subscribeVideoContentList);
         }
 
     }

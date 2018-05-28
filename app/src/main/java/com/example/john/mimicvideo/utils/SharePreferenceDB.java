@@ -21,6 +21,7 @@
 
 package com.example.john.mimicvideo.utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -43,13 +44,27 @@ import java.util.Map;
 
 public class SharePreferenceDB {
 
-    private SharedPreferences preferences;
+    private static SharePreferenceDB sharePreferenceDB = new SharePreferenceDB();
+    private static SharedPreferences preferences;
     private String DEFAULT_APP_IMAGEDATA_DIRECTORY;
     private String lastImagePath = "";
-
+    public static SharePreferenceDB getInstance(Context context) {
+        if (preferences == null) {
+            preferences = context.getSharedPreferences(context.getPackageName(), Activity.MODE_PRIVATE);
+        }
+        return sharePreferenceDB;
+    }
     public SharePreferenceDB(Context appContext) {
         preferences = PreferenceManager.getDefaultSharedPreferences(appContext);
     }
+
+    private SharePreferenceDB() {
+
+    }
+    /*public SharePreferenceDB(Context appContext) {
+        preferences = PreferenceManager.getDefaultSharedPreferences(appContext);
+    }*/
+
 
 
     /**
