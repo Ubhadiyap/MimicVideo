@@ -7,20 +7,49 @@
         <!--rectangle 長方形 可以畫出直角形，圓角形，弧形等-->
         <shape android:shape="rectangle">
             <!--設定圓角，當設置的圓角半徑很大，就可變成弧形邊了-->
-            <corners android:radius="20dip" />
+            <corners android:radius="14dip" />
             <!--邊框-->
-            <stroke android:width="1dip" android:color="#071E54" />
-            <gradient android:angle="-90" android:startColor="#77FFEE" android:endColor="#00FF99"  />
+            <gradient
+                android:angle="45"
+                android:centerX="35%"
+                android:centerColor="#A5AAC2"
+                android:startColor="#C5CED9"
+                android:endColor="#9395B5"
+                android:type="linear"
+                />
+            <size
+                android:width="100dp"
+                android:height="20dp"
+                />
+            <padding
+                android:bottom="5dip"
+                android:left="40dip"
+                android:right="40dip"
+                android:top="5dip" />
         </shape>
     </item>
 
     <!-- 預設時 -->
     <item android:state_activated="false">
         <shape android:shape="rectangle"  >
-            <corners android:radius="20dip" />
-            <stroke android:width="1dip" android:color="#538394" />
-            <!--漸層顏色-->
-            <gradient android:angle="-90" android:startColor="#0099CC" android:endColor="#017DAB"  />
+            <corners android:radius="14dip" />
+            <gradient
+                android:angle="45"
+                android:centerX="35%"
+                android:centerColor="#36CED9"
+                android:startColor="#508CD9"
+                android:endColor="#C5D8D9"
+                android:type="linear"
+                />
+            <size
+                android:width="100dp"
+                android:height="20dp"
+                />
+            <padding
+                android:bottom="5dip"
+                android:left="50dip"
+                android:right="50dip"
+                android:top="5dip" />
         </shape>
     </item>
 

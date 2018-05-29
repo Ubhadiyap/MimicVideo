@@ -23,7 +23,6 @@ import com.example.john.mimicvideo.utils.ApplicationService;
 import com.example.john.mimicvideo.utils.GridLayoutManagerWithSmoothScroller;
 import com.example.john.mimicvideo.utils.JSONParser;
 import com.example.john.mimicvideo.utils.SearchItemDecoration;
-import com.example.john.mimicvideo.utils.SharePreferenceDB;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -97,12 +96,14 @@ public class OtherProfileActivity extends BaseActivity {
                     case 0:
                         subscribeBtn.setActivated(true);
                         subscribeBtn.setText("已訂閱");
+                        subscribeBtn.setCompoundDrawablesWithIntrinsicBounds(null,getResources().getDrawable(R.drawable.heart_subscribed), null, null);
                         flag = 1;
 
                         break;
                     case 1:
                         subscribeBtn.setActivated(false);
                         subscribeBtn.setText("訂閱");
+                        subscribeBtn.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.heart_unsubscribe),null, null, null);
                         flag = 0;
                         break;
                 }
