@@ -137,7 +137,7 @@ public class ContinueCameraActivity extends BaseActivity implements
             @Override
             public void onClick(View view) {
                 mRecorderClient.swapCamera();
-                iv_change_flash.setVisibility(mRecorderClient.isFrontCamera() ? View.GONE : View.VISIBLE);
+                //iv_change_flash.setVisibility(mRecorderClient.isFrontCamera() ? View.GONE : View.VISIBLE);
             }
         });
 
@@ -408,7 +408,11 @@ public class ContinueCameraActivity extends BaseActivity implements
     private ArrayList<Long> durationList;
 
     private void mergeFile() {
-        finishRecording(mSaveVideoPath);
+        if(totalTime > 2000){
+            finishRecording(mSaveVideoPath);
+        }else{
+            Toast.makeText(ContinueCameraActivity.this, "錄製影片太短", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void finishRecording(String filePath) {
@@ -420,9 +424,7 @@ public class ContinueCameraActivity extends BaseActivity implements
         if(mp4List.size() == 1) {
             new File(mp4List.get(0)).renameTo(new File(mSaveVideoPath));
             //Toast.makeText(getApplicationContext(), "视频文件已保存至"+ mSaveVideoPath, Toast.LENGTH_SHORT).show();
-            mp4List.clear();
-            durationList.clear();
-            rb_start.cleanSplit();
+            resetCamera();
             Intent intent = new Intent();
             intent.setClass(ContinueCameraActivity.this, VideoPreviewActivity.class);
             startActivity(intent);
@@ -444,9 +446,7 @@ public class ContinueCameraActivity extends BaseActivity implements
 //                    Toast.makeText(getApplicationContext(), "视频文件保存失败!!!", Toast.LENGTH_SHORT).show();
 //                }
                 //below delete record
-               mp4List.clear();
-               durationList.clear();
-                rb_start.cleanSplit();
+                resetCamera();
                 Intent intent = new Intent();
                 intent.setClass(ContinueCameraActivity.this, VideoPreviewActivity.class);
                 startActivity(intent);
@@ -589,6 +589,15 @@ public class ContinueCameraActivity extends BaseActivity implements
     };
     private void stopTimeTask() {
         mTimeHandle.clearMsg();
+    }
+
+    private void resetCamera(){
+        mp4List.clear();
+        durationList.clear();
+        rb_start.cleanSplit();
+        rb_start.setProgress(0);
+        changeButton(false);
+        totalTime = 0;
     }
 
     private static class Mp4MergeTask extends AsyncTask<Object, Object, Boolean> {

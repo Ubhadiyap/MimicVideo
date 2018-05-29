@@ -485,7 +485,7 @@ public class VideoPreviewActivity extends BaseActivity implements OnTrimVideoLis
                     }else{
                         isRecording = false;
                         stopRecordAudio();
-                        resetAudioPlay();
+                        //resetAudioPlay();
                     }
                 }else{
                     Toast.makeText(VideoPreviewActivity.this, "已超過錄音數量3個", Toast.LENGTH_SHORT).show();
@@ -881,43 +881,45 @@ public class VideoPreviewActivity extends BaseActivity implements OnTrimVideoLis
 
     public void stopRecordAudio(){
         recordImg.setImageResource(R.drawable.recorder);
-        if(!isMute){
-            this.setVolume(100);
-        }
-        mVideoView.setEnabled(true);
-        mHolderTopView.setEnabled(true);
+        if(mRecorder != null){
+            if(!isMute){
+                this.setVolume(100);
+            }
+            mVideoView.setEnabled(true);
+            mHolderTopView.setEnabled(true);
 
-        endRecordTime = currentDuration;
-        Log.d(TAG, "startRecordTime" + startRecordTime);
-        Log.d(TAG, "endRecordTime" + endRecordTime);
-        // Stop recording and release resource
-        mRecorder.stop();
-        mRecorder.release();
-        mRecorder = null;
+            endRecordTime = currentDuration;
+            Log.d(TAG, "startRecordTime" + startRecordTime);
+            Log.d(TAG, "endRecordTime" + endRecordTime);
+            // Stop recording and release resource
+            mRecorder.stop();
+            mRecorder.release();
+            mRecorder = null;
 
-        RecordAudio recordAudio = new RecordAudio();
-        recordAudio.id = soundPool.load(fileName,0);
-        recordAudio.path = fileName;
-        if(startRecordTime == 0){
-            recordAudio.startTime = startRecordTime + 1;
-        }else{
-            recordAudio.startTime = startRecordTime;
-        }
+            RecordAudio recordAudio = new RecordAudio();
+            recordAudio.id = soundPool.load(fileName,0);
+            recordAudio.path = fileName;
+            if(startRecordTime == 0){
+                recordAudio.startTime = startRecordTime + 1;
+            }else{
+                recordAudio.startTime = startRecordTime;
+            }
 
-        if(endRecordTime == 0){
-            recordAudio.endTime = endRecordTime + 1;
-        }else{
-            recordAudio.endTime = endRecordTime;
-        }
+            if(endRecordTime == 0){
+                recordAudio.endTime = endRecordTime + 1;
+            }else{
+                recordAudio.endTime = endRecordTime;
+            }
 
-        recordAudioList.add(recordAudio);
+            recordAudioList.add(recordAudio);
 
-        if(recordAudioList.size() == 1){
-            deleteLineTxt1.setVisibility(View.VISIBLE);
-        }else if(recordAudioList.size() == 2){
-            deleteLineTxt2.setVisibility(View.VISIBLE);
-        }else if(recordAudioList.size() == 3){
-            deleteLineTxt3.setVisibility(View.VISIBLE);
+            if(recordAudioList.size() == 1){
+                deleteLineTxt1.setVisibility(View.VISIBLE);
+            }else if(recordAudioList.size() == 2){
+                deleteLineTxt2.setVisibility(View.VISIBLE);
+            }else if(recordAudioList.size() == 3){
+                deleteLineTxt3.setVisibility(View.VISIBLE);
+            }
         }
 
         //回到起點
@@ -927,6 +929,7 @@ public class VideoPreviewActivity extends BaseActivity implements OnTrimVideoLis
         mVideoView.pause();
         mPlayView.setVisibility(View.VISIBLE);
         resetAudioPlay();//可重新播放聲音
+        currentDuration = 0;
     }
 
     public void stopRecordAudioAuto(){
@@ -975,6 +978,7 @@ public class VideoPreviewActivity extends BaseActivity implements OnTrimVideoLis
         mVideoView.pause();
         mPlayView.setVisibility(View.VISIBLE);
         resetAudioPlay();//可重新播放聲音
+        currentDuration = 0;
     }
 
     private void onClickVideoPlayPause() {

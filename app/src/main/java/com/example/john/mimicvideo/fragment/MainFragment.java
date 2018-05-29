@@ -114,7 +114,8 @@ public class MainFragment extends Fragment {
 
         sharePreferenceDB = new SharePreferenceDB(getActivity());
 
-        getUserLike(sharePreferenceDB.getInt("id"));
+        getUserLike(sharePreferenceDB.getInt("id"));//獲取like
+        getUserIFollow(sharePreferenceDB.getInt("id"));//獲取追蹤名單
 
 
         goProfilePageTxt.setTypeface(ApplicationService.getFont());
@@ -248,6 +249,35 @@ public class MainFragment extends Fragment {
                                 clickFavoriteIdArrayList.add(response.getString(i));
                             }
                             sharePreferenceDB.putListString("clickFavoriteIdArrayList", clickFavoriteIdArrayList);
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+
+                    }
+                });
+    }
+
+    public void getUserIFollow(int user_id){
+        AndroidNetworking.post(Api.baseUrl + "get_user_I_follow.php")
+                .addBodyParameter("follower_id", String.valueOf(user_id))
+                .setTag("getUserIFollow")
+                .setPriority(Priority.MEDIUM)
+                .build()
+                .getAsJSONArray(new JSONArrayRequestListener() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        Log.d(TAG, "get all my like successfully");
+                        try{
+                            ArrayList<String> userIdIFollowArrayList = new ArrayList<>();
+                            for(int i = 0; i < response.length(); ++i){
+                                userIdIFollowArrayList.add(response.getString(i));
+                            }
+                            sharePreferenceDB.putListString("userIdIFollowArrayList", userIdIFollowArrayList);
                         }catch (Exception e){
                             e.printStackTrace();
                         }

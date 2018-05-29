@@ -51,8 +51,8 @@ public class ProfileActivity extends BaseActivity {
     private List<VideoContent>userVideoContentList = new ArrayList<>();
     private List<VideoContent>subscribeVideoContentList = new ArrayList<>();
     private UserVideoContentAdapter userVideoContentAdapter;
-    private int video_content_amount = 20;
-    private int like_video_content_amount = 20;
+    private int video_content_amount = 100;
+    private int like_video_content_amount = 100;
     private int current_size = 100;
     private boolean is_loading = false;
 
@@ -113,8 +113,7 @@ public class ProfileActivity extends BaseActivity {
             public void onClick(View view) {
                 myVideoContentTabTxt.setBackgroundColor(Color.parseColor("#888888"));
                 myVideoLikeTabTxt.setBackgroundColor(Color.parseColor("#DDDDDD"));
-
-
+                userVideoContentAdapter.setVideoContentList(userVideoContentList);
             }
         });
         myVideoLikeTabTxt.setOnClickListener(new View.OnClickListener() {
@@ -122,11 +121,7 @@ public class ProfileActivity extends BaseActivity {
             public void onClick(View view) {
                 myVideoLikeTabTxt.setBackgroundColor(Color.parseColor("#888888"));
                 myVideoContentTabTxt.setBackgroundColor(Color.parseColor("#DDDDDD"));
-                //userVideoContentRV.setAdapter(userVideoContentAdapter);
-                userVideoContentAdapter = new UserVideoContentAdapter(ProfileActivity.this, subscribeVideoContentList);
-                userVideoContentRV.setLayoutManager(layoutManager);
-                userVideoContentRV.addItemDecoration(new SearchItemDecoration(ProfileActivity.this, 0));
-                userVideoContentRV.setAdapter(userVideoContentAdapter);
+                userVideoContentAdapter.setVideoContentList(subscribeVideoContentList);
             }
         });
 
@@ -181,7 +176,7 @@ public class ProfileActivity extends BaseActivity {
 
 
         new GetUserVideoContent(video_content_amount, SharePreferenceDB.getInstance(ProfileActivity.this).getInt("id")).execute();
-        new GetUserLikeVideoContent(like_video_content_amount, SharePreferenceDB.getInstance(ProfileActivity.this).getInt("id")).execute();
+        new GetUserSubscribeVideoContent(like_video_content_amount, SharePreferenceDB.getInstance(ProfileActivity.this).getInt("id")).execute();
     }
 
     @Override
@@ -274,11 +269,11 @@ public class ProfileActivity extends BaseActivity {
 
     }
 
-    class GetUserLikeVideoContent extends AsyncTask<String, String, String> {
+    class GetUserSubscribeVideoContent extends AsyncTask<String, String, String> {
         int video_content_amount;
         int user_id;
 
-        GetUserLikeVideoContent(int video_content_amount, int user_id){
+        GetUserSubscribeVideoContent(int video_content_amount, int user_id){
             this.video_content_amount = video_content_amount;
             this.user_id = user_id;
         }
@@ -305,7 +300,7 @@ public class ProfileActivity extends BaseActivity {
 
             // getting JSON Object
             // Note that create product url accepts POST method
-            JSONArray videoContentJSONArray = jsonParser.makeHttpRequestArray("http://1.34.63.239/get_user_like_video_content.php",
+            JSONArray videoContentJSONArray = jsonParser.makeHttpRequestArray("http://1.34.63.239/get_user_subscribe_video_content.php",
                     "POST", params);
 
             if(videoContentJSONArray != null){
@@ -353,7 +348,7 @@ public class ProfileActivity extends BaseActivity {
          * After completing background task Dismiss the progress dialog
          * **/
         protected void onPostExecute(String file_url) {
-            userVideoContentAdapter.setVideoContentList(subscribeVideoContentList);
+            //userVideoContentAdapter.setVideoContentList(subscribeVideoContentList);
         }
 
     }

@@ -39,8 +39,12 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/nameTxt"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="0dp"
         android:background="@drawable/round_btn"
-        android:text="訂閱" />
+        android:drawableLeft="@drawable/heart_unsubscribe"
+        android:text="訂閱"
+        android:textColor="#000000"
+        android:textSize="15sp" />
 
     <LinearLayout
         android:layout_width="match_parent"

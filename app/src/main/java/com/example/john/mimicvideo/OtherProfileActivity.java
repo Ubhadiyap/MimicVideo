@@ -49,8 +49,10 @@ public class OtherProfileActivity extends BaseActivity {
     int id;
     String name;
     String profile;
+
     //for subscribe btn
     int flag = 0;
+    ArrayList<String>userIdIFollowArrayList = new ArrayList<>();
 
     @Override
     public void onBackPressed() {
@@ -76,6 +78,19 @@ public class OtherProfileActivity extends BaseActivity {
         name = getIntent().getStringExtra("name");
         profile = getIntent().getStringExtra("profile");
 
+        if(id == SharePreferenceDB.getInstance(OtherProfileActivity.this).getInt("id")){
+            subscribeBtn.setVisibility(View.GONE);
+        }
+
+        userIdIFollowArrayList = SharePreferenceDB.getInstance(OtherProfileActivity.this).getListString("userIdIFollowArrayList");
+        for(int i =0; i < userIdIFollowArrayList.size(); i++){
+            if(String.valueOf(id).equals(userIdIFollowArrayList.get(i))){
+                subscribeBtn.setActivated(true);
+                subscribeBtn.setText("已訂閱");
+                flag = 1;
+            }
+        }
+
         GridLayoutManagerWithSmoothScroller layoutManager = new GridLayoutManagerWithSmoothScroller(OtherProfileActivity.this, 2);
         layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
@@ -98,6 +113,9 @@ public class OtherProfileActivity extends BaseActivity {
                         subscribeBtn.setText("已訂閱");
                         subscribeBtn.setCompoundDrawablesWithIntrinsicBounds(null,getResources().getDrawable(R.drawable.heart_subscribed), null, null);
                         flag = 1;
+                        new CreateSubscribe(id, SharePreferenceDB.getInstance(OtherProfileActivity.this).getInt("id")).execute();
+                        userIdIFollowArrayList.add(String.valueOf(id));
+                        SharePreferenceDB.getInstance(OtherProfileActivity.this).putListString("userIdIFollowArrayList", userIdIFollowArrayList);
 
                         break;
                     case 1:
@@ -105,6 +123,9 @@ public class OtherProfileActivity extends BaseActivity {
                         subscribeBtn.setText("訂閱");
                         subscribeBtn.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.heart_unsubscribe),null, null, null);
                         flag = 0;
+                        new DeleteSubscribe(id, SharePreferenceDB.getInstance(OtherProfileActivity.this).getInt("id")).execute();
+                        userIdIFollowArrayList.remove(String.valueOf(id));
+                        SharePreferenceDB.getInstance(OtherProfileActivity.this).putListString("userIdIFollowArrayList", userIdIFollowArrayList);
                         break;
                 }
             }
@@ -225,12 +246,12 @@ public class OtherProfileActivity extends BaseActivity {
     }
 
 
-    class Subscribe extends AsyncTask<String, String, JSONObject> {
+    class CreateSubscribe extends AsyncTask<String, String, JSONObject> {
         int owner_id;
         int follower_id;
 
 
-        Subscribe(int owner_id, int follower_id){
+        CreateSubscribe(int owner_id, int follower_id){
             this.owner_id = owner_id;
             this.follower_id = follower_id;
         }
@@ -257,7 +278,68 @@ public class OtherProfileActivity extends BaseActivity {
             // getting JSON Object
             // Note that create product url accepts POST method
             //php名待改
-            JSONObject jsonObject = jsonParser.makeHttpRequest(Api.baseUrl + "subsrcibe.php",
+            JSONObject jsonObject = jsonParser.makeHttpRequest(Api.baseUrl + "create_subscribe.php",
+                    "POST", params);
+
+            if(jsonObject != null){
+                // check log cat fro response
+                Log.d("Create Response", jsonObject.toString());
+                return jsonObject;
+            }else{
+                return null;
+            }
+        }
+
+        /**
+         * After completing background task Dismiss the progress dialog
+         * **/
+        protected void onPostExecute(JSONObject jsonObject) {
+            if(jsonObject != null){
+                if(jsonObject.optInt("success") == 1){
+
+                }else{
+
+                }
+            }else {
+
+            }
+        }
+
+    }
+
+    class DeleteSubscribe extends AsyncTask<String, String, JSONObject> {
+        int owner_id;
+        int follower_id;
+
+
+        DeleteSubscribe(int owner_id, int follower_id){
+            this.owner_id = owner_id;
+            this.follower_id = follower_id;
+        }
+
+        /**
+         * Before starting background thread Show Progress Dialog
+         * */
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        /**
+         * Creating product
+         * */
+        protected JSONObject doInBackground(String... args) {
+
+            // Building Parameters
+            List<NameValuePair> params = new ArrayList<NameValuePair>();
+            params.add(new BasicNameValuePair("owner_id", String.valueOf(owner_id)));
+            params.add(new BasicNameValuePair("follower_id", String.valueOf(follower_id)));
+
+
+            // getting JSON Object
+            // Note that create product url accepts POST method
+            //php名待改
+            JSONObject jsonObject = jsonParser.makeHttpRequest(Api.baseUrl + "delete_subscribe.php",
                     "POST", params);
 
             if(jsonObject != null){

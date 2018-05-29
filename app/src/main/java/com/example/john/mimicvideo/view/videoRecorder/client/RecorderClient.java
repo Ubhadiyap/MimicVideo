@@ -131,7 +131,6 @@ public class RecorderClient {
             videoClient.stopPreview(releaseTexture);
             Log.d("","RecorderClient,stopPreview()");
         }
-
     }
 
     /**
