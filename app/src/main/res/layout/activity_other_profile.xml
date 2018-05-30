@@ -43,7 +43,7 @@
         android:background="@drawable/round_btn"
         android:drawableLeft="@drawable/heart_unsubscribe"
         android:text="訂閱"
-        android:textColor="#000000"
+        android:textColor="#FFFFFF"
         android:textSize="15sp" />
 
     <LinearLayout

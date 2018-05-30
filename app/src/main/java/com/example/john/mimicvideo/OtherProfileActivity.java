@@ -116,7 +116,7 @@ public class OtherProfileActivity extends BaseActivity {
                     case 0:
                         subscribeBtn.setActivated(true);
                         subscribeBtn.setText("已訂閱");
-                        subscribeBtn.setTextColor(Color.WHITE);
+                        //subscribeBtn.setTextColor(Color.WHITE);
                         subscribeBtn.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.heart_subscribed),null, null, null);
                         flag = 1;
                         new CreateSubscribe(id, SharePreferenceDB.getInstance(OtherProfileActivity.this).getInt("id")).execute();
@@ -127,7 +127,7 @@ public class OtherProfileActivity extends BaseActivity {
                     case 1:
                         subscribeBtn.setActivated(false);
                         subscribeBtn.setText("訂閱");
-                        subscribeBtn.setTextColor(Color.BLACK);
+                        //subscribeBtn.setTextColor(Color.BLACK);
                         subscribeBtn.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.heart_unsubscribe),null, null, null);
                         flag = 0;
                         new DeleteSubscribe(id, SharePreferenceDB.getInstance(OtherProfileActivity.this).getInt("id")).execute();
