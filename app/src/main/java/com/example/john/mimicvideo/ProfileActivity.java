@@ -113,7 +113,7 @@ public class ProfileActivity extends BaseActivity {
             public void onClick(View view) {
                 myVideoContentTabTxt.setBackgroundColor(Color.parseColor("#888888"));
                 myVideoLikeTabTxt.setBackgroundColor(Color.parseColor("#DDDDDD"));
-                userVideoContentAdapter.setVideoContentList(userVideoContentList);
+                userVideoContentAdapter.setVideoContentList(userVideoContentList, 0);
             }
         });
         myVideoLikeTabTxt.setOnClickListener(new View.OnClickListener() {
@@ -121,7 +121,7 @@ public class ProfileActivity extends BaseActivity {
             public void onClick(View view) {
                 myVideoLikeTabTxt.setBackgroundColor(Color.parseColor("#888888"));
                 myVideoContentTabTxt.setBackgroundColor(Color.parseColor("#DDDDDD"));
-                userVideoContentAdapter.setVideoContentList(subscribeVideoContentList);
+                userVideoContentAdapter.setVideoContentList(subscribeVideoContentList, 1);
             }
         });
 
@@ -264,7 +264,7 @@ public class ProfileActivity extends BaseActivity {
          * After completing background task Dismiss the progress dialog
          * **/
         protected void onPostExecute(String file_url) {
-            userVideoContentAdapter.setVideoContentList(userVideoContentList);
+            userVideoContentAdapter.setVideoContentList(userVideoContentList, 0);
         }
 
     }
