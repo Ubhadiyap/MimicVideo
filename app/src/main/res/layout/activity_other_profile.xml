@@ -39,7 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/nameTxt"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="0dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/round_btn"
         android:drawableLeft="@drawable/heart_unsubscribe"
         android:text="訂閱"
