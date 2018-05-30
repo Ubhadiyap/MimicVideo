@@ -1,6 +1,7 @@
 package com.example.john.mimicvideo;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -88,6 +89,9 @@ public class OtherProfileActivity extends BaseActivity {
             if(String.valueOf(id).equals(userIdIFollowArrayList.get(i))){
                 subscribeBtn.setActivated(true);
                 subscribeBtn.setText("已訂閱");
+                subscribeBtn.setTextColor(Color.WHITE);
+                subscribeBtn.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.heart_subscribed),null, null, null);
+                SharePreferenceDB.getInstance(OtherProfileActivity.this).putListString("userIdIFollowArrayList", userIdIFollowArrayList);
                 flag = 1;
             }
         }
@@ -112,6 +116,8 @@ public class OtherProfileActivity extends BaseActivity {
                     case 0:
                         subscribeBtn.setActivated(true);
                         subscribeBtn.setText("已訂閱");
+                        //subscribeBtn.setTextColor(Color.WHITE);
+                        subscribeBtn.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.heart_subscribed),null, null, null);
                         flag = 1;
                         new CreateSubscribe(id, SharePreferenceDB.getInstance(OtherProfileActivity.this).getInt("id")).execute();
                         userIdIFollowArrayList.add(String.valueOf(id));
@@ -121,6 +127,8 @@ public class OtherProfileActivity extends BaseActivity {
                     case 1:
                         subscribeBtn.setActivated(false);
                         subscribeBtn.setText("訂閱");
+                        //subscribeBtn.setTextColor(Color.BLACK);
+                        subscribeBtn.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.heart_unsubscribe),null, null, null);
                         flag = 0;
                         new DeleteSubscribe(id, SharePreferenceDB.getInstance(OtherProfileActivity.this).getInt("id")).execute();
                         userIdIFollowArrayList.remove(String.valueOf(id));
