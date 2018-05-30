@@ -49,6 +49,9 @@ import java.util.List;
 public class UserVideoContentAdapter extends RecyclerView.Adapter<UserVideoContentAdapter.ViewHolder> {
     Context context;
     List<VideoContent> videoContentList;
+    int MY_VIDEO_CONTENT = 0;
+    int SUBSCRIBE_VIDEO_CONTENT = 1;
+    int videoType = 0;
 
     public UserVideoContentAdapter(Context context, List<VideoContent>videoContentList) {
         this.context = context;
@@ -72,11 +75,18 @@ public class UserVideoContentAdapter extends RecyclerView.Adapter<UserVideoConte
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent();
-                intent.setClass(context, EditVideoContentActivity.class);
-                intent.putExtra("videoContent", videoContentList.get(position));
-                intent.putExtra("videoContentId", videoContentList.get(position).id);
-                ((Activity)context).startActivityForResult(intent, 0);
+                if(videoType == MY_VIDEO_CONTENT){
+                    Intent intent = new Intent();
+                    intent.setClass(context, EditVideoContentActivity.class);
+                    intent.putExtra("videoContent", videoContentList.get(position));
+                    intent.putExtra("videoContentId", videoContentList.get(position).id);
+                    ((Activity)context).startActivityForResult(intent, 0);
+                }else{
+                    Intent intent = new Intent();
+                    intent.setClass(context, ShowVideoContentActivity.class);
+                    intent.putExtra("videoContentId", videoContentList.get(position).id);
+                    context.startActivity(intent);
+                }
             }
         });
 
@@ -88,8 +98,9 @@ public class UserVideoContentAdapter extends RecyclerView.Adapter<UserVideoConte
         return videoContentList.size();
     }
 
-    public void setVideoContentList(List<VideoContent> videoContentList){
+    public void setVideoContentList(List<VideoContent> videoContentList, int videoType){
         this.videoContentList = videoContentList;
+        this.videoType = videoType;
         notifyDataSetChanged();
     }
 
