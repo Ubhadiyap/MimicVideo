@@ -10,8 +10,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.john.mimicvideo.OtherProfileActivity;
 import com.example.john.mimicvideo.ProfileActivity;
 import com.example.john.mimicvideo.R;
+import com.example.john.mimicvideo.ShowVideoContentActivity;
 import com.example.john.mimicvideo.model.Comment;
 import com.example.john.mimicvideo.utils.JSONParser;
 
@@ -48,7 +50,10 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent();
-                intent.setClass(context, ProfileActivity.class);
+                intent.setClass(context, OtherProfileActivity.class);
+                intent.putExtra("id",commentList.get(position).owner.id);
+                intent.putExtra("name", commentList.get(position).owner.name);
+                intent.putExtra("profile", commentList.get(position).owner.profile);
                 context.startActivity(intent);
             }
         });
