@@ -74,16 +74,36 @@
         <activity
             android:name=".BaseActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".VideoSampleActivity" />
-        <activity android:name=".ShowVideoContentActivity" />
-        <activity android:name=".ShareActivity" />
-        <activity android:name=".VideoContentTitleActivity" />
-        <activity android:name=".EditVideoContentActivity" />
-        <activity android:name=".OtherProfileActivity" />
-        <activity android:name=".VideoPreviewActivity" />
-        <activity android:name=".LoadingActivity" />
-        <activity android:name=".ContinueCameraActivity" />
-        <activity android:name=".MainActivity"/>
+        <activity
+            android:name=".VideoSampleActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ShowVideoContentActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ShareActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".VideoContentTitleActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".EditVideoContentActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".OtherProfileActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".VideoPreviewActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".LoadingActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ContinueCameraActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>
