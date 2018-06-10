@@ -53,7 +53,6 @@
         android:id="@+id/fbLlogoutBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/fbBtn"
         android:text="登出"
         android:visibility="gone" />
 </RelativeLayout>
