@@ -5,13 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.example.john.mimicvideo.view.VerticalViewPager
+    <com.shou.john.mimicvideo.view.VerticalViewPager
         android:id="@+id/sameVideoContentVP"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone">
 
-    </com.example.john.mimicvideo.view.VerticalViewPager>
+    </com.shou.john.mimicvideo.view.VerticalViewPager>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/sameVideoContentRV"
@@ -21,7 +21,7 @@
 
     </android.support.v7.widget.RecyclerView>
 
-    <com.example.john.mimicvideo.view.AutoPlayVideo.AAH_CustomRecyclerView
+    <com.shou.john.mimicvideo.view.AutoPlayVideo.AAH_CustomRecyclerView
         android:id="@+id/sameVideoContentAutoPlayRV"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

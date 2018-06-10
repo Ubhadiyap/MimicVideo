@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.john.mimicvideo.VideoPreviewActivity">
+    tools:context="com.example.john.mimicvideo.com.shou.john.mimicvideo.VideoPreviewActivity">
 
     <RelativeLayout
         android:id="@+id/layout_surface_view"
@@ -65,21 +65,21 @@
             android:secondaryProgress="0"
             android:thumb="@drawable/down_arrow" />
 
-        <com.example.john.mimicvideo.view.VideoTrimmer.view.ProgressBarView
+        <com.shou.john.mimicvideo.view.VideoTrimmer.view.ProgressBarView
             android:id="@+id/timeVideoView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/handlerTop"
             android:visibility="gone" />
 
-        <com.example.john.mimicvideo.view.VideoTrimmer.view.TimeLineView
+        <com.shou.john.mimicvideo.view.VideoTrimmer.view.TimeLineView
             android:id="@+id/timeLineView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/handlerTop" />
 
-        <com.example.john.mimicvideo.view.VideoTrimmer.view.RangeSeekBarView
+        <com.shou.john.mimicvideo.view.VideoTrimmer.view.RangeSeekBarView
             android:id="@+id/timeLineBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.john.mimicvideo.VideoContentTitleActivity">
+    tools:context="com.example.john.mimicvideo.com.shou.john.mimicvideo.VideoContentTitleActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"

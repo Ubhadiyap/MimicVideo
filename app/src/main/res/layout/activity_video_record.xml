@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.example.john.mimicvideo.view.videoRecorder.ui.AspectTextureView
+        <com.shou.john.mimicvideo.view.videoRecorder.ui.AspectTextureView
             android:id="@+id/preview_textureview"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
@@ -54,7 +54,7 @@
                 android:src="@mipmap/send" />
         </RelativeLayout>
 
-        <com.example.john.mimicvideo.view.RecordedButton
+        <com.shou.john.mimicvideo.view.RecordedButton
             android:id="@+id/rb_start"
             android:layout_width="100dp"
             android:layout_height="120dp"

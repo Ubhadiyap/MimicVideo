@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:layout_weight="1">
 
-        <com.example.john.mimicvideo.view.AutoPlayVideo.AAH_VideoImage
+        <com.shou.john.mimicvideo.view.AutoPlayVideo.AAH_VideoImage
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 

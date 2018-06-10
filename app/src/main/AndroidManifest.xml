@@ -17,14 +17,14 @@
     <uses-permission android:name=" android.permission.READ_PHONE_STATE" />
 
     <application
-        android:name=".utils.ApplicationService"
+        android:name="com.shou.john.mimicvideo.utils.ApplicationService"
         android:allowBackup="true"
         android:icon="@mipmap/crazy_talk_logo"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LogoActivity">
+        <activity android:name="com.shou.john.mimicvideo.LogoActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.SEND" />
@@ -32,7 +32,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SearchActivity" />
+        <activity android:name="com.shou.john.mimicvideo.SearchActivity" />
 
         <provider
             android:name="com.facebook.FacebookContentProvider"
@@ -60,49 +60,49 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LoginActivity"
+            android:name="com.shou.john.mimicvideo.LoginActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".CommentActivity"
+            android:name="com.shou.john.mimicvideo.CommentActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".SameVideoContentActivity"
+            android:name="com.shou.john.mimicvideo.SameVideoContentActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ProfileActivity"
+            android:name="com.shou.john.mimicvideo.ProfileActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".BaseActivity"
+            android:name="com.shou.john.mimicvideo.BaseActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".VideoSampleActivity"
+            android:name="com.shou.john.mimicvideo.VideoSampleActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".ShowVideoContentActivity"
+            android:name="com.shou.john.mimicvideo.ShowVideoContentActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".ShareActivity"
+            android:name="com.shou.john.mimicvideo.ShareActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".VideoContentTitleActivity"
+            android:name="com.shou.john.mimicvideo.VideoContentTitleActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".EditVideoContentActivity"
+            android:name="com.shou.john.mimicvideo.EditVideoContentActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".OtherProfileActivity"
+            android:name="com.shou.john.mimicvideo.OtherProfileActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".VideoPreviewActivity"
+            android:name="com.shou.john.mimicvideo.VideoPreviewActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".LoadingActivity"
+            android:name="com.shou.john.mimicvideo.LoadingActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".ContinueCameraActivity"
+            android:name="com.shou.john.mimicvideo.ContinueCameraActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".MainActivity"
+            android:name="com.shou.john.mimicvideo.MainActivity"
             android:screenOrientation="portrait"/>
     </application>
 
