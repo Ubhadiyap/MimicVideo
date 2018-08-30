@@ -48,4 +48,5 @@ dependencies {
     implementation 'de.hdodenhof:circleimageview:2.2.0'
     implementation project(':WeiXinRecorded')
     implementation 'com.android.support:design:27.1.0'
+    //change version
 }
